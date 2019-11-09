@@ -1,0 +1,19 @@
+dependencies {
+    // kotlin
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'org.jetbrains.kotlin:kotlin-reflect'
+    //compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+    // db
+    compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version"
+
+    // rpc
+    compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version"
+
+    // test
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile 'junit:junit:4.11'
+
+    // jdbc
+    runtime "mysql:mysql-connector-java:5.1.6"
+}

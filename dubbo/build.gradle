@@ -1,0 +1,21 @@
+dependencies{
+    // other project
+    compile project(':common')
+
+    // dubbo
+    compile "org.apache.dubbo:dubbo:$dubbo_version"
+    compile "org.apache.dubbo:dubbo-dependencies-zookeeper:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-registry-multicast:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-registry-nacos:$dubbo_version"
+//    compile "com.alibaba.nacos:nacos-client:1.1.1"
+//    compile "org.apache.dubbo:dubbo-registry-zookeeper:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-configcenter-zookeeper:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-configcenter-nacos:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-metadata-report-nacos:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-metadata-report-zookeeper:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-rpc-dubbo:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-config-spring:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-remoting-netty4:$dubbo_version"
+//    compile "org.apache.dubbo:dubbo-serialization-hessian2:$dubbo_version"
+
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'jksoa-benchmark'
+
+include 'common', 'jksoa-rpc', 'dubbo', 'motan'
