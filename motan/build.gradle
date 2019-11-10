@@ -1,3 +1,19 @@
 dependencies{
+    // other project
+    compile project(':common')
+
+    // motan
+    compile "com.weibo:motan-core:$motan_version"
+    compile "com.weibo:motan-springsupport:$motan_version"
+    compile "com.weibo:motan-transport-netty4:$motan_version"
+    compile "com.weibo:motan-registry-zookeeper:$motan_version"
+//    compile "com.weibo:motan-registry-consul:$motan_version"
+//    compile "com.weibo:motan-protocol-yar:$motan_version"
+//    compile "com.weibo:motan-protocol-grpc:$motan_version"
+//    compile "com.weibo:motan-protocol-restful:$motan_version"
+//    compile "com.weibo:serialization-extension:$motan_version"
+
+    compile "org.springframework:spring-context:4.1.6.RELEASE"
+    compile "org.springframework:spring-web:4.1.6.RELEASE"
 
 }

@@ -27,8 +27,8 @@
 
     <dubbo:protocol name="dubbo"/>
 
-    <bean id="messageService" class="net.jkcode.jksoa.benchmark.common.service.MessageService"/>
+    <bean id="benchmarkService" class="net.jkcode.jksoa.benchmark.common.impl.BenchmarkService"/>
 
-    <dubbo:service interface="net.jkcode.jksoa.benchmark.common.service.IMessageService" ref="messageService"/>
+    <dubbo:service interface="net.jkcode.jksoa.benchmark.common.api.IBenchmarkService" ref="benchmarkService"/>
 
 </beans>

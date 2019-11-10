@@ -14,7 +14,7 @@ object BenchmarkClient : IBenchmarkClient {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val context = ClassPathXmlApplicationContext("spring/dubbo-consumer.xml")
+        val context = ClassPathXmlApplicationContext("motan-client.xml")
         context.start()
         val benchmarkService = context.getBean("benchmarkService", IBenchmarkService::class.java)
         // 测试

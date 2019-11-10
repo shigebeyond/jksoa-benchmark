@@ -1,10 +1,10 @@
-package net.jkcode.jksoa.benchmark.common.model
+package net.jkcode.jksoa.benchmark.common.impl
 
 import net.jkcode.jkmvc.model.GeneralModel
 import net.jkcode.jkmvc.orm.IEntitiableOrm
 import net.jkcode.jkmvc.orm.IOrm
 import net.jkcode.jkmvc.orm.OrmMeta
-import net.jkcode.jksoa.benchmark.common.entity.MessageEntity
+import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 
 /**
  * 消息模型

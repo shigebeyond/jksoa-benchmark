@@ -1,7 +1,7 @@
 package net.jkcode.jksoa.benchmark.rpc
 
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
-import net.jkcode.jksoa.benchmark.common.service.IMessageService
+import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.rpc.client.referer.Referer
 
 /**
@@ -14,10 +14,10 @@ object BenchmarkClient : IBenchmarkClient {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val service = Referer.getRefer<IMessageService>()
+        val benchmarkService = Referer.getRefer<IBenchmarkService>()
         // 测试
         test(args){ i ->
-            service.getMessageFromDb(i % 10 + 1)
+            benchmarkService.getMessageFromDb(i % 10 + 1)
         }
     }
 

@@ -1,4 +1,4 @@
-package net.jkcode.jksoa.benchmark.common.entity
+package net.jkcode.jksoa.benchmark.common.api
 
 import net.jkcode.jkmvc.orm.OrmEntity
 

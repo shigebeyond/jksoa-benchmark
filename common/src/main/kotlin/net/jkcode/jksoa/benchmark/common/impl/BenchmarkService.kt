@@ -1,11 +1,11 @@
-package net.jkcode.jksoa.benchmark.common.service
+package net.jkcode.jksoa.benchmark.common.impl
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
 import net.jkcode.jkmvc.common.randomInt
-import net.jkcode.jksoa.benchmark.common.entity.MessageEntity
-import net.jkcode.jksoa.benchmark.common.model.MessageModel
+import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
+import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import java.io.File
 import java.util.concurrent.CompletableFuture
 
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-29 8:32 PM
  */
-class MessageService: IMessageService {
+class BenchmarkService: IBenchmarkService {
 
     /**
      * 基于内存的缓存
@@ -48,7 +48,7 @@ class MessageService: IMessageService {
             msg.id = i
             msg.fromUid = randomInt(10)
             msg.toUid = randomInt(10)
-            msg.content = "hello orm"
+            msg.content = "benchmark message $i"
             msgs.add(msg)
         }
 
@@ -65,7 +65,17 @@ class MessageService: IMessageService {
     }
 
     /**
+     * 简单输出
+     *   测试序列化, 特别是大对象的序列化
+     */
+    public override fun echo(request: Any): Any {
+        return request
+    }
+
+    /**
      * 从缓存中获得消息
+     *    测试读缓存
+     *
      * @param id
      * @return
      */
@@ -75,7 +85,9 @@ class MessageService: IMessageService {
     }
 
     /**
-     * 从db获得消息
+     * 从文件获得消息
+     *    测试读文件
+     *
      * @param id
      * @return
      */
@@ -90,6 +102,8 @@ class MessageService: IMessageService {
 
     /**
      * 从db获得消息
+     *   测试读db
+     *
      * @param id
      * @return
      */

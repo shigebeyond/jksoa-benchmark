@@ -3,8 +3,8 @@ package net.jkcode.jksoa.benchmark.common
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.common.randomInt
-import net.jkcode.jksoa.benchmark.common.entity.MessageEntity
-import net.jkcode.jksoa.benchmark.common.service.MessageService
+import net.jkcode.jksoa.benchmark.common.api.MessageEntity
+import net.jkcode.jksoa.benchmark.common.impl.BenchmarkService
 import org.junit.Test
 
 /**
@@ -37,7 +37,7 @@ class MyTest {
 
     @Test
     fun testService(){
-        val service = MessageService()
+        val service = BenchmarkService()
         val msgFuture = service.getMessageFromDb(1)
         println(msgFuture.get())
     }
