@@ -91,4 +91,21 @@ subprojects{
             }
         }
     }
+
+    // 复制jar
+    task copyToLib(type: Copy) {
+        into "${buildDir}/libs/libs"
+        from configurations.runtime
+    }
+    if (project.hasProperty("all"))
+        build.dependsOn(copyToLib)
+
+    // 复制start.sh
+    task copyStartSh(type: Copy) {
+        into "${buildDir}/libs"
+        from "start-server.sh"
+        from "start-client.sh"
+    }
+    if (project.hasProperty("all"))
+        build.dependsOn(copyStartSh)
 }

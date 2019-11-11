@@ -6,17 +6,3 @@ dependencies {
     // jksoa-rpc
     compile "net.jkcode.jksoa:jksoa-rpc-server:$jksoa_version"
 }
-
-// 复制jar
-task copyToLib(type: Copy) {
-    into "${buildDir}/libs/libs"
-    from configurations.runtime
-}
-build.dependsOn(copyToLib)
-
-// 复制start.sh
-task copyStartSh(type: Copy) {
-    into "${buildDir}/libs"
-    from "start*.sh"
-}
-build.dependsOn(copyStartSh)

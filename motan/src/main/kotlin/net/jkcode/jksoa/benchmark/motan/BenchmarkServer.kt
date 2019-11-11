@@ -1,4 +1,4 @@
-package net.jkcode.jksoa.benchmark.dubbo
+package net.jkcode.jksoa.benchmark.motan
 
 import org.springframework.context.support.ClassPathXmlApplicationContext
 

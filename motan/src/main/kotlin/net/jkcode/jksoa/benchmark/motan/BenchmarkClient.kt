@@ -1,4 +1,4 @@
-package net.jkcode.jksoa.benchmark.dubbo
+package net.jkcode.jksoa.benchmark.motan
 
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
