@@ -15,10 +15,12 @@ object BenchmarkClient : IBenchmarkClient {
     @JvmStatic
     fun main(args: Array<String>) {
         val benchmarkService = Referer.getRefer<IBenchmarkService>()
+        val f = benchmarkService.getMessageFromDb(1)
+        println(f.get())
         // 测试
-        test(args){ i ->
+        /*test(args){ i ->
             benchmarkService.getMessageFromDb(i % 10 + 1)
-        }
+        }*/
     }
 
 }

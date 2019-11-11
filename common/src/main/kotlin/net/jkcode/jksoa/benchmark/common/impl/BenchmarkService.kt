@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
 import net.jkcode.jkmvc.common.randomInt
+import net.jkcode.jkmvc.db.Db
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import java.io.File
+import java.io.InputStreamReader
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -29,12 +31,24 @@ class BenchmarkService: IBenchmarkService {
     // 至于db的配置见 MessageModel
 
     init{
-        // 初始化测试数据
+        // 建表
+        createTable()
+
+        // 初始化数据
         initData()
     }
 
     /**
-     * 初始化测试数据
+     * 建表: message
+     */
+    private fun createTable() {
+        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("message.mysql.sql")
+        val sql = InputStreamReader(`is`).readText()
+        Db.instance().execute(sql)
+    }
+
+    /**
+     * 初始化数据
      */
     private fun initData() {
         // 有数据跳过

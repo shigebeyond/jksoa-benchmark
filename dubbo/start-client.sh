@@ -1,10 +1,11 @@
 #!/bin/sh
-# gradle build -x test
+JAVA_OPTS="-Djava.net.preferIPv4Stack=true -server -Xms1g -Xmx1g -XX:PermSize=128m"
 
-cd build/libs
-
-export JAVA_OPTS="-XX:MaxPermSize=128m -Xmx512M -Djava.util.concurrent.ForkJoinPool.common.parallelism=8"
+JAVA_DEBUG_OPTS=""
+if [ "$1" = "debug" ]; then
+    JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
+fi
 
 SERVER_NAME='net.jkcode.jksoa.benchmark.dubbo.BenchmarkClient'
 
-java $JAVA_OPTS -cp dubbo-1.0-SNAPSHOT.jar:libs/* $SERVER_NAME
+java $JAVA_OPTS $JAVA_DEBUG_OPTS -cp dubbo-1.0-SNAPSHOT.jar:libs/* $SERVER_NAME

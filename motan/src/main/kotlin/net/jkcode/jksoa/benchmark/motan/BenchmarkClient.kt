@@ -17,10 +17,13 @@ object BenchmarkClient : IBenchmarkClient {
         val context = ClassPathXmlApplicationContext("motan-client.xml")
         context.start()
         val benchmarkService = context.getBean("benchmarkService", IBenchmarkService::class.java)
+        val r = benchmarkService.getMessageFromDb( 1)
+        println(r.get())
+
         // 测试
-        test(args){ i ->
+        /*test(args){ i ->
             benchmarkService.getMessageFromDb(i % 10 + 1)
-        }
+        }*/
     }
 
 }

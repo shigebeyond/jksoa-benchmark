@@ -1,6 +1,9 @@
 # 性能测试
 
-参考motan-benchmark<https://github.com/weibocom/motan/tree/master/motan-benchmark>, 分别针对 jksoa-rpc / dubbo / motan 等3个框架进行性能测试
+参考motan-benchmark: 1 [说明](https://github.com/weibocom/motan/blob/master/docs/wiki/zh_userguide.md#性能测试) 2
+[代码](https://github.com/weibocom/motan/tree/master/motan-benchmark)
+
+我分别针对 jksoa-rpc / dubbo / motan 等3个框架进行性能测试
 
 以下是我们测试的结果：
 

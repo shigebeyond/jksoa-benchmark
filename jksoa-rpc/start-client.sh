@@ -1,9 +1,5 @@
 #!/bin/sh
-# gradle build -x test
-
-cd build/libs
-
-export JAVA_OPTS="-XX:MaxPermSize=128m -Xmx512M -Djava.util.concurrent.ForkJoinPool.common.parallelism=8"
+export JAVA_OPTS="-Djava.net.preferIPv4Stack=true -server -Xms1g -Xmx1g -XX:PermSize=128m -Djava.util.concurrent.ForkJoinPool.common.parallelism=8"
 
 SERVER_NAME='net.jkcode.jksoa.benchmark.rpc.BenchmarkClient'
 

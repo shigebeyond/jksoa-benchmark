@@ -6,6 +6,7 @@ import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import net.jkcode.jksoa.benchmark.common.impl.BenchmarkService
 import org.junit.Test
+import net.jkcode.jkmvc.serialize.ISerializer
 
 /**
  *
@@ -40,5 +41,21 @@ class MyTest {
         val service = BenchmarkService()
         val msgFuture = service.getMessageFromDb(1)
         println(msgFuture.get())
+    }
+
+    @Test
+    fun testSerialize(){
+        val i = 1
+        val msg = MessageEntity()
+        msg.id = i
+        msg.fromUid = randomInt(10)
+        msg.toUid = randomInt(10)
+        msg.content = "benchmark message $i"
+
+        val s = ISerializer.instance("fst")
+        val bs = s.serialize(msg)
+
+        val msg2 = s.unserialize(bs!!) as MessageEntity
+        println(msg2)
     }
 }
