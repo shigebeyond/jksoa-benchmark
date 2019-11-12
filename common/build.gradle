@@ -8,7 +8,10 @@ dependencies {
     compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version"
 
     // rpc
-    compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version"
+    if(env == 'dev') // 分支 test-benchmark, 作为jksoa子模块
+        compile project(':jksoa-rpc:jksoa-rpc-client')
+    else
+        compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version"
 
     // test
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"

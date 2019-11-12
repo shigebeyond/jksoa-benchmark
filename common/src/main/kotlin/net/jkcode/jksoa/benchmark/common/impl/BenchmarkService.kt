@@ -126,5 +126,22 @@ class BenchmarkService: IBenchmarkService {
         return CompletableFuture.completedFuture(msg)
     }
 
+    /**
+     * 从db获得消息
+     *   测试读db
+     *
+     * @param id
+     * @return
+     */
+    public override fun getMessageFromDb2(id: Int): MessageEntity {
+        //val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()!!
+        val msg = MessageEntity()
+        msg.id = 1
+        msg.fromUid = randomInt(10)
+        msg.toUid = randomInt(10)
+        msg.content = "hello orm"
+        return msg
+    }
+
 }
 

@@ -22,6 +22,6 @@ open class MessageEntity: OrmEntity() {
     public var content:String by property() // 消息内容
 
     override fun equals(other: Any?): Boolean {
-        return this.data == (other as MessageEntity).data
+        return other is MessageEntity && this.data == other.data
     }
 }

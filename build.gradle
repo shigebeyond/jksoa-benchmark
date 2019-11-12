@@ -93,12 +93,12 @@ subprojects{
     }
 
     // 复制jar
-    task copyToLib(type: Copy) {
+    task copyLib(type: Copy) {
         into "${buildDir}/libs/libs"
         from configurations.runtime
     }
     if (project.hasProperty("all"))
-        build.dependsOn(copyToLib)
+        build.dependsOn(copyLib)
 
     // 复制start.sh
     task copyStartSh(type: Copy) {

@@ -45,4 +45,13 @@ interface IBenchmarkService {
      */
     fun getMessageFromDb(Id: Int): CompletableFuture<MessageEntity>
 
+    /**
+     * 从db获得消息
+     *   测试读db
+     *
+     * @param id
+     * @return
+     */
+    fun getMessageFromDb2(id: Int): MessageEntity
+
 }
