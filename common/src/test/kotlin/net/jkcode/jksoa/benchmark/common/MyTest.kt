@@ -9,6 +9,7 @@ import org.junit.Test
 import net.jkcode.jkmvc.serialize.ISerializer
 import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import net.jkcode.jksoa.common.RpcResponse
+import java.io.File
 
 /**
  *
@@ -70,6 +71,7 @@ class MyTest {
 
         val bs = s.serialize(res)
 
+        // server发送的
         val bs2 = ByteArray(160)
         bs2[0] = 0
         bs2[1] = 1
@@ -232,6 +234,7 @@ class MyTest {
         bs2[158] = 49
         bs2[159] = 0
 
+        // client收到的
         val bs3 = ByteArray(160)
         bs3[0] = 0
         bs3[1] = 1
@@ -394,13 +397,25 @@ class MyTest {
         bs3[158] = 49
         bs3[159] = 0
 
-        println(bs == bs2)
-        println(bs2 == bs3)
+        checkEquals(bs2, bs3)
 
 
         val res2 = s.unserialize(bs2!!) as RpcResponse
         println(res2)
-
         println(res.value == res2.value)
+
+        val res3 = s.unserialize(bs3!!) as RpcResponse
+        println(res3)
+        println(res.value == res3.value)
+    }
+
+    private fun checkEquals(bs1: ByteArray, bs2: ByteArray) {
+        println(bs1 == bs2)
+        for (i in 0 until 160) {
+            val v2 = bs1[i]
+            val v3 = bs2[i]
+            if (v2 != v3)
+                println("第 $i 个字节不等: $v2 != $v3")
+        }
     }
 }
