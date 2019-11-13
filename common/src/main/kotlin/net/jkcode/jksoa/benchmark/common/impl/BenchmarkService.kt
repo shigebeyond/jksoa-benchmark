@@ -51,10 +51,6 @@ class BenchmarkService: IBenchmarkService {
      * 初始化数据
      */
     private fun initData() {
-        // 有数据跳过
-        if (MessageModel.queryBuilder().count() > 0)
-            return
-
         // 初始化数据
         val msgs = ArrayList<MessageEntity>()
         for (i in 1..10) {
@@ -75,7 +71,8 @@ class BenchmarkService: IBenchmarkService {
         file.writeText(json)
 
         // 3 写db
-        MessageModel.batchInsert(msgs);
+        if(MessageModel.queryBuilder().count() == 0)
+            MessageModel.batchInsert(msgs);
     }
 
     /**
