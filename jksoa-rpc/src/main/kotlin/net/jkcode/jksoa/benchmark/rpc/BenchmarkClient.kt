@@ -24,14 +24,14 @@ object BenchmarkClient : IBenchmarkClient {
         msg.fromUid = randomInt(10)
         msg.toUid = randomInt(10)
         msg.content = "hello orm"*/
-        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()!!
-        val msg2 = benchmarkService.echo(msg)
-        println(msg2)
+//        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()!!
+//        val msg2 = benchmarkService.echo(msg)
+//        println(msg2)
 
-//        val msg = benchmarkService.getMessageFromDb2(1)
-//        println(msg)
+        val msg = benchmarkService.getMessageFromDb2(1)
+        println(msg)
 
-//        val f = benchmarkService.getMessageFromDb(2)
+//        val f = benchmarkService.getMessageFromCache(1)
 //        println(f.get())
         // 测试
         /*test(args){ i ->

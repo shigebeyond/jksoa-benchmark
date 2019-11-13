@@ -51,10 +51,6 @@ class BenchmarkService: IBenchmarkService {
      * 初始化数据
      */
     private fun initData() {
-        // 有数据跳过
-        if (MessageModel.queryBuilder().count() > 0)
-            return
-
         // 初始化数据
         val msgs = ArrayList<MessageEntity>()
         for (i in 1..10) {
@@ -68,14 +64,15 @@ class BenchmarkService: IBenchmarkService {
 
         // 1 写缓存
         for(msg in msgs)
-            cache.put(msg.id, msg, 100000000)
+            cache.put(msg.id, msg, Long.MAX_VALUE)
 
         // 2 写文件
         var json = JSON.toJSONString(msgs)
         file.writeText(json)
 
         // 3 写db
-        MessageModel.batchInsert(msgs);
+        if (MessageModel.queryBuilder().count() == 0)
+            MessageModel.batchInsert(msgs);
     }
 
     /**
@@ -135,11 +132,12 @@ class BenchmarkService: IBenchmarkService {
      */
     public override fun getMessageFromDb2(id: Int): MessageEntity {
         //val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()!!
+        // error: class not found CLASSNAME: loader:sun.misc.Launcher$AppClassLoader@18b4aac2
         val msg = MessageEntity()
-        msg.id = 1
-        msg.fromUid = randomInt(10)
-        msg.toUid = randomInt(10)
-        msg.content = "hello orm"
+//        msg.id = 1
+//        msg.fromUid = randomInt(10)
+//        msg.toUid = randomInt(10)
+//        msg.content = "hello orm"
         return msg
     }
 
