@@ -1,5 +1,4 @@
 dependencies {
-
     if(env == 'dev'){ // 分支 test-benchmark, 作为jksoa子模块
         compile project(':benchmark-common')
         compile project(':jksoa-rpc:jksoa-rpc-server')

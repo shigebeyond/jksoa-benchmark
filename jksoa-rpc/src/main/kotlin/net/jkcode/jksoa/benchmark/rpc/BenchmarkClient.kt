@@ -1,10 +1,8 @@
 package net.jkcode.jksoa.benchmark.rpc
 
-import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
-import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import net.jkcode.jksoa.rpc.client.referer.Referer
 
 /**
@@ -24,12 +22,18 @@ object BenchmarkClient : IBenchmarkClient {
         msg.fromUid = randomInt(10)
         msg.toUid = randomInt(10)
         msg.content = "hello orm"*/
-        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()!!
-        val msg2 = benchmarkService.echo(msg)
-        println(msg2)
+//        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()!!
+//        val msg2 = benchmarkService.echo(msg)
+//        println(msg2)
 
-//        val msg = benchmarkService.getMessageFromDb2(1)
-//        println(msg)
+        //MessageEntity()
+        val msg: MessageEntity = benchmarkService.getMessage(1)
+        println(msg)
+
+        // succ
+//        val str = randomString(1000000000)
+//        val str2 = benchmarkService.echo(str)
+//        println(str2)
 
 //        val f = benchmarkService.getMessageFromDb(2)
 //        println(f.get())

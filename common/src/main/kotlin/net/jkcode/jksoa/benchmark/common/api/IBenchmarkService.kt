@@ -52,6 +52,6 @@ interface IBenchmarkService {
      * @param id
      * @return
      */
-    fun getMessageFromDb2(id: Int): MessageEntity
+    fun getMessage(id: Int): MessageEntity
 
 }

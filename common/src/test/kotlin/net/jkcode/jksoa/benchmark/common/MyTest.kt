@@ -10,6 +10,8 @@ import net.jkcode.jkmvc.serialize.ISerializer
 import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import net.jkcode.jksoa.common.RpcResponse
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  *
@@ -48,17 +50,48 @@ class MyTest {
 
     @Test
     fun testSerialize(){
-        val i = 1
         val msg = MessageEntity()
-        msg.id = i
-        msg.fromUid = randomInt(10)
-        msg.toUid = randomInt(10)
-        msg.content = "benchmark message $i"
+        msg.id = 1
+        msg.fromUid = 1
+        msg.toUid = 1
+        msg.content = "hello orm"
+        val res = RpcResponse(1, msg)
 
         val s = ISerializer.instance("fst")
-        val bs = s.serialize(msg)
+        val bs = s.serialize(res)!!
+        File("/home/shi/test/benchmark/original.data").writeBytes(bs)
 
-        val msg2 = s.unserialize(bs!!) as MessageEntity
+        val res2 = s.unserialize(bs)
+        println(res2)
+
+        val bs3 = File("/home/shi/test/benchmark/original.data").readBytes()
+        val res3 = s.unserialize(bs3)
+        println(res3)
+    }
+
+    @Test
+    fun testUnserialize(){
+        // 有以下语句则成功, 否则报空指针异常
+        //val msg = MessageEntity()
+
+        val bs3 = File("/home/shi/test/benchmark/original.data").readBytes()
+        val s = ISerializer.instance("fst")
+        val res3 = s.unserialize(bs3)
+        println(res3)
+    }
+
+    @Test
+    fun testFile(){
+        val bs = File("/home/shi/test/benchmark/client.data").readBytes()
+        val bs2 = File("/home/shi/test/benchmark/server.data").readBytes()
+        val bs3 = File("/home/shi/test/benchmark/original.data").readBytes()
+        checkEquals(bs, bs2)
+        checkEquals(bs2, bs3)
+
+        val s = ISerializer.instance("fst")
+        val msg = s.unserialize(bs)
+        println(msg)
+        val msg2 = s.unserialize(bs2)
         println(msg2)
     }
 
@@ -72,7 +105,6 @@ class MyTest {
 
         val msg2 = s.unserialize(bs)
         println(msg2)
-
 
     }
 
@@ -103,8 +135,9 @@ class MyTest {
     }
 
     private fun checkEquals(bs1: ByteArray, bs2: ByteArray) {
-        println(bs1 == bs2)
-        for (i in 0 until 160) {
+        //println(bs1 == bs2)
+        println(Arrays.equals(bs1, bs2))
+        for (i in 0 until bs1.size) {
             val v2 = bs1[i]
             val v3 = bs2[i]
             if (v2 != v3)
