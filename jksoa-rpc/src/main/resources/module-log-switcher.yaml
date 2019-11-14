@@ -1,0 +1,7 @@
+# 按组件来切换启用日志
+common: false
+rpc: false
+job: false
+guard: false
+tracer: false
+mq: false

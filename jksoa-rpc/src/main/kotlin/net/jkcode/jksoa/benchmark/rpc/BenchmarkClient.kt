@@ -16,31 +16,10 @@ object BenchmarkClient : IBenchmarkClient {
     @JvmStatic
     fun main(args: Array<String>) {
         val benchmarkService = Referer.getRefer<IBenchmarkService>()
-
-        /*val msg = MessageEntity()
-        msg.id = 1
-        msg.fromUid = randomInt(10)
-        msg.toUid = randomInt(10)
-        msg.content = "hello orm"*/
-//        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()!!
-//        val msg2 = benchmarkService.echo(msg)
-//        println(msg2)
-
-        //MessageEntity()
-        val msg: MessageEntity = benchmarkService.getMessage(1)
-        println(msg)
-
-        // succ
-//        val str = randomString(1000000000)
-//        val str2 = benchmarkService.echo(str)
-//        println(str2)
-
-//        val f = benchmarkService.getMessageFromDb(2)
-//        println(f.get())
         // 测试
-        /*test(args){ i ->
+        test(args){ i ->
             benchmarkService.getMessageFromDb(i % 10 + 1)
-        }*/
+        }
     }
 
 }

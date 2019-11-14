@@ -27,7 +27,7 @@ interface IBenchmarkClient {
             nThread = Integer.parseInt(args[0])
 
         // 请求数
-        var nReq = 10
+        var nReq = 100
         if (args.size > 1)
             nReq = Integer.parseInt(args[1])
 
@@ -94,6 +94,7 @@ interface IBenchmarkClient {
         System.out.printf("min: %f\n", stats.getMin())
         System.out.printf("99P: %f\n", stats.getPercentile(90.0))
     }
+
 
 }
 

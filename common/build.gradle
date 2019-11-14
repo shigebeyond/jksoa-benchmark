@@ -4,14 +4,13 @@ dependencies {
     compile 'org.jetbrains.kotlin:kotlin-reflect'
     //compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    // db
-    compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version"
-
-    // rpc
-    if(env == 'dev') // 分支 test-benchmark, 作为jksoa子模块
-        compile project(':jksoa-rpc:jksoa-rpc-client')
-    else
-        compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version"
+    if(env == 'dev') { // 分支 test-benchmark, 作为jksoa子模块
+        compile project(':jkmvc-orm') // orm
+        compile project(':jksoa-rpc:jksoa-rpc-client') // rpc
+    }else {
+        compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version" // orm
+        compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version" // rpc
+    }
 
     // test
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
