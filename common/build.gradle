@@ -12,6 +12,9 @@ dependencies {
         compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version" // rpc
     }
 
+    // motan -- ResponResponseFutureseFuture
+    compile "com.weibo:motan-core:$motan_version"
+
     // test
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile 'junit:junit:4.11'
