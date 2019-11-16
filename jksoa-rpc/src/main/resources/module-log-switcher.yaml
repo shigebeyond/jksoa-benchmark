@@ -1,7 +1,7 @@
-# 按组件来切换启用日志
-common: false
-rpc: false
-job: false
-guard: false
-tracer: false
-mq: false
+# 按组件来切换日志级别: trace/debug/info/warn/error
+common: info
+rpc: info
+job: info
+guard: info
+tracer: info
+mq: info

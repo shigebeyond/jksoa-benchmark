@@ -18,7 +18,7 @@ dependencies{
 }
 
 
-
+// 打包
 if (project.hasProperty("all")){
     build.finalizedBy(copyLib)
     build.dependsOn(copyStartSh)

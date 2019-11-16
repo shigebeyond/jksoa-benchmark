@@ -5,6 +5,7 @@ import net.jkcode.jkmvc.common.currMillis
 import net.jkcode.jkmvc.common.currMillisCached
 import net.jkcode.jkmvc.common.mapToArray
 import net.jkcode.jksoa.guard.measure.HashedWheelMeasurer
+import org.slf4j.LoggerFactory
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -20,6 +21,11 @@ abstract class IBenchmarkClient {
      * 配置
      */
     public val config: Config = Config.instance("benchmark", "yaml")
+
+    /**
+     * 日志
+     */
+    public val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
      * 执行测试
@@ -70,10 +76,11 @@ abstract class IBenchmarkClient {
 
         // 打印性能测试结果
         val runTime = (currMillis() - start) / 1000
-        println("----------Benchmark Statistics--------------")
-        println("Concurrents: $concurrents")
-        println("Runtime: $runTime seconds")
-        measurer.bucketCollection().printStatistics(runTime)
+        logger.info("----------Benchmark Statistics--------------")
+        logger.info("Concurrents: $concurrents")
+        logger.info("Runtime: $runTime seconds")
+        logger.info(measurer.bucketCollection().toDesc(runTime))
+        println(measurer.bucketCollection().toDesc(runTime))
     }
 
 }

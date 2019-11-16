@@ -12,4 +12,4 @@ fi
 
 SERVER_NAME='net.jkcode.jksoa.benchmark.rpc.BenchmarkClient'
 
-java $JAVA_OPTS -cp jksoa-rpc-1.0-SNAPSHOT.jar:libs/* $SERVER_NAME
+java $JAVA_OPTS -cp conf:libs/* $SERVER_NAME

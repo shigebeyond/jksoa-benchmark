@@ -2,3 +2,5 @@
 concurrents: 10
 # 请求数
 requests: 10000
+# 动作: cache/file/db
+action: db
