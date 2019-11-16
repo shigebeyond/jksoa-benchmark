@@ -79,8 +79,8 @@ class BenchmarkService: IBenchmarkService {
      * 简单输出
      *   测试序列化, 特别是大对象的序列化
      */
-    public override fun echo(request: Any): Any {
-        return request
+    public override fun echo(request: Any): CompletableFuture<Any> {
+        return CompletableFuture.completedFuture(request)
     }
 
     /**
@@ -121,24 +121,6 @@ class BenchmarkService: IBenchmarkService {
     public override fun getMessageFromDb(id: Int): CompletableFuture<MessageEntity> {
         val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
         return CompletableFuture.completedFuture(msg)
-    }
-
-    /**
-     * 从db获得消息
-     *   测试读db
-     *
-     * @param id
-     * @return
-     */
-    //test
-    public override fun getMessage(id: Int): MessageEntity {
-        //val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()!!
-        val msg = MessageEntity()
-        msg.id = 1
-        msg.fromUid = 1
-        msg.toUid = 1
-        msg.content = "hello orm"
-        return msg
     }
 
 }

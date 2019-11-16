@@ -16,3 +16,11 @@ dependencies{
     compile "org.springframework:spring-web:4.1.6.RELEASE"
 
 }
+
+
+
+if (project.hasProperty("all")){
+    build.finalizedBy(copyLib)
+    build.dependsOn(copyStartSh)
+    build.dependsOn(copyConf)
+}

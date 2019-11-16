@@ -1,0 +1,4 @@
+# 并发数
+concurrents: 10
+# 请求数
+requests: 10000

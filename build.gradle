@@ -94,18 +94,21 @@ subprojects{
 
     // 复制jar
     task copyLib(type: Copy) {
-        into "${buildDir}/libs/libs"
+        into "${buildDir}/${project.name}/libs"
         from configurations.runtime
+        from "${buildDir}/libs/${project.name}-${project.version}.jar"
     }
-    if (project.hasProperty("all"))
-        build.dependsOn(copyLib)
 
     // 复制start.sh
     task copyStartSh(type: Copy) {
-        into "${buildDir}/libs"
+        into "${buildDir}/${project.name}"
         from "start-server.sh"
         from "start-client.sh"
     }
-    if (project.hasProperty("all"))
-        build.dependsOn(copyStartSh)
+
+    // 复制配置文件
+    task copyConf(type: Copy) {
+        into "${buildDir}/${project.name}/conf"
+        from sourceSets.main.resources
+    }
 }
