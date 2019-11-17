@@ -110,5 +110,13 @@ subprojects{
     task copyConf(type: Copy) {
         into "${buildDir}/${project.name}/conf"
         from sourceSets.main.resources
+        from project(":common").sourceSets.main.resources
+    }
+
+    // 打包
+    if (project.name != "common" && project.hasProperty("all")){
+        build.finalizedBy(copyLib)
+        build.dependsOn(copyStartSh)
+        build.dependsOn(copyConf)
     }
 }

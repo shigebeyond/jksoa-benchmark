@@ -16,11 +16,3 @@ dependencies{
     compile "org.springframework:spring-web:4.1.6.RELEASE"
 
 }
-
-
-// 打包
-if (project.hasProperty("all")){
-    build.finalizedBy(copyLib)
-    build.dependsOn(copyStartSh)
-    build.dependsOn(copyConf)
-}

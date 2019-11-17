@@ -6,11 +6,3 @@ dependencies{
     compile "org.apache.dubbo:dubbo:$dubbo_version"
     compile "org.apache.dubbo:dubbo-dependencies-zookeeper:$dubbo_version"
 }
-
-
-// 打包
-if (project.hasProperty("all")){
-    build.finalizedBy(copyLib)
-    build.dependsOn(copyStartSh)
-    build.dependsOn(copyConf)
-}

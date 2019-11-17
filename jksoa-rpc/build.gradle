@@ -7,10 +7,3 @@ dependencies {
         compile "net.jkcode.jksoa:jksoa-rpc-server:$jksoa_version"
     }
 }
-
-// 打包
-if (project.hasProperty("all")){
-    build.finalizedBy(copyLib)
-    build.dependsOn(copyStartSh)
-    build.dependsOn(copyConf)
-}
