@@ -9,6 +9,7 @@ import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import net.jkcode.jksoa.guard.measure.HashedWheelMeasurer
 import org.slf4j.LoggerFactory
+import java.text.MessageFormat
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -49,22 +50,24 @@ abstract class IBenchmarkClient {
         val latch = CountDownLatch(requests)
         val pool = Executors.newFixedThreadPool(concurrents)
 
-        val start = currMillis()
-        val measurer = HashedWheelMeasurer(60 * 5, 1000, 100)
+        val rtMsFraction = 1000 // 千分之一毫秒
+        val rtNsMultiple = 1000000L / rtMsFraction
+        val measurer = HashedWheelMeasurer(60 * 5, 1000, 100, rtMsFraction)
+        val start = System.nanoTime() / rtNsMultiple
         val resps = AtomicInteger()
         for (i in 1..requests) {
             pool.submit {
                 // 1 添加总计数
                 measurer.currentBucket().addTotal()
-                val reqStart = currMillis()
+                val reqStart = System.nanoTime() / rtNsMultiple
                 
                 // rpc
                 val future = action.invoke(i % 10 + 1)
                 future.whenComplete { r, e ->
                     //2 添加请求耗时
                     val bucket = measurer.currentBucket()
-                    val reqTime = currMillis() - reqStart
-                    bucket.addRt(reqTime)
+                    val reqTime = System.nanoTime() / rtNsMultiple - reqStart
+                    bucket.addRt(reqTime) // 千分之一毫秒
 
                     if (e == null) //3 添加成功计数
                         bucket.addSuccess()
@@ -72,7 +75,7 @@ abstract class IBenchmarkClient {
                         bucket.addException()
 
                     if(config["logEveryRequest"]!!) {
-                        logger.info("Response " + resps.incrementAndGet() + ": cost $reqTime ms")
+                        logger.info(MessageFormat.format("Response {0}: cost {1,number,#.##} ms", resps.incrementAndGet(), reqTime.toDouble() / rtMsFraction))
                         if (e != null)
                             logger.error("err: " + e.message, e)
                     }
@@ -84,11 +87,11 @@ abstract class IBenchmarkClient {
         }
 
         latch.await()
-        val runTime = currMillis() - start
-        logger.info("Test end: cost $runTime ms")
+        val runTime = System.nanoTime() / rtNsMultiple - start
+        logger.info(MessageFormat.format("Test end: cost {0,number,#.##} ms", runTime.toDouble() / rtMsFraction))
 
         // 打印性能测试结果
-        logger.info("----------Benchmark Statistics--------------\nConcurrents: $concurrents \nRuntime: $runTime ms\n" + measurer.bucketCollection().toDesc(runTime))
+        logger.info("----------Benchmark Statistics--------------\nConcurrents: $concurrents\n" + measurer.bucketCollection().toDesc(runTime))
     }
 
     /**
