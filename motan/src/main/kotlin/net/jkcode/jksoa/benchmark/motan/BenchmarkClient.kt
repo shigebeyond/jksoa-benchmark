@@ -2,7 +2,9 @@ package net.jkcode.jksoa.benchmark.motan
 
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
+import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import org.springframework.context.support.ClassPathXmlApplicationContext
+import java.util.concurrent.CompletableFuture
 
 /**
  * 性能测试
@@ -16,14 +18,12 @@ object BenchmarkClient : IBenchmarkClient() {
     fun main(args: Array<String>) {
         val context = ClassPathXmlApplicationContext("motan-client.xml")
         context.start()
-        val benchmarkService = context.getBean("benchmarkService", IBenchmarkService::class.java)
-        val r = benchmarkService.getMessageFromDb( 1)
-        println(r.get())
-
+        val benchmarkService = context.getBean("asyncBenchmarkService", IMotanBenchmarkServiceAsync::class.java)
+        /*val f = benchmarkService.getMessageFromDbAsync(1)
+        println(f.value)*/
+        val action: (Int) -> CompletableFuture<*> = getMotanAction(benchmarkService)
         // 测试
-        /*test(args){ i ->
-            benchmarkService.getMessageFromDb(i % 10 + 1)
-        }*/
+        test(action)
     }
 
 }

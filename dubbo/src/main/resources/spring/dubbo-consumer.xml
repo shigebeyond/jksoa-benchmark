@@ -23,7 +23,7 @@
 
     <dubbo:application name="message-consumer"/>
 
-    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:registry address="zookeeper://127.0.0.1:2182"/>
 
     <dubbo:reference id="benchmarkService" check="false" interface="net.jkcode.jksoa.benchmark.common.api.IBenchmarkService"/>
 

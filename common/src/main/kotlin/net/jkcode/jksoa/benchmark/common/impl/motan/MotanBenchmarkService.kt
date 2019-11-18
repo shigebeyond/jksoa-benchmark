@@ -1,22 +1,22 @@
-package net.jkcode.jksoa.benchmark.common.impl
+package net.jkcode.jksoa.benchmark.common.impl.motan
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
 import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jkmvc.db.Db
-import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
+import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService
+import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import java.io.File
 import java.io.InputStreamReader
-import java.util.concurrent.CompletableFuture
 
 /**
  * 性能测试服务
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-29 8:32 PM
  */
-class BenchmarkService: IBenchmarkService {
+class MotanBenchmarkService: IMotanBenchmarkService {
 
     /**
      * 基于内存的缓存
@@ -78,16 +78,16 @@ class BenchmarkService: IBenchmarkService {
     /**
      * 啥都不干
      */
-    public override fun doNothing(id: Int): CompletableFuture<Void>{
-        return CompletableFuture.completedFuture(null)
+    public override fun doNothing(id: Int): Void?{
+        return null
     }
 
     /**
      * 简单输出
      *   测试序列化, 特别是大对象的序列化
      */
-    public override fun echo(request: Any): CompletableFuture<Any> {
-        return CompletableFuture.completedFuture(request)
+    public override fun echo(request: Any): Any {
+        return request
     }
 
     /**
@@ -97,9 +97,8 @@ class BenchmarkService: IBenchmarkService {
      * @param id
      * @return
      */
-    public override fun getMessageFromCache(id: Int): CompletableFuture<MessageEntity> {
-        val msg = cache.get(id) as MessageEntity
-        return CompletableFuture.completedFuture(msg)
+    public override fun getMessageFromCache(id: Int): MessageEntity? {
+        return cache.get(id) as MessageEntity
     }
 
     /**
@@ -109,13 +108,13 @@ class BenchmarkService: IBenchmarkService {
      * @param id
      * @return
      */
-    public override fun getMessageFromFile(id: Int): CompletableFuture<MessageEntity> {
+    public override fun getMessageFromFile(id: Int): MessageEntity? {
         val json = file.readText()
         val msgs = JSONObject.parseArray(json, MessageEntity::class.java)
         val msg = msgs.first{
             it.id == id
         }
-        return CompletableFuture.completedFuture(msg)
+        return msg
     }
 
     /**
@@ -125,9 +124,8 @@ class BenchmarkService: IBenchmarkService {
      * @param id
      * @return
      */
-    public override fun getMessageFromDb(id: Int): CompletableFuture<MessageEntity> {
-        val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
-        return CompletableFuture.completedFuture(msg)
+    public override fun getMessageFromDb(id: Int): MessageEntity? {
+        return MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
     }
 
 }

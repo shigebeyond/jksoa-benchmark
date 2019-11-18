@@ -2,7 +2,6 @@ package net.jkcode.jksoa.benchmark.rpc
 
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
-import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import net.jkcode.jksoa.rpc.client.referer.Referer
 import java.util.concurrent.CompletableFuture
 
@@ -17,13 +16,9 @@ object BenchmarkClient : IBenchmarkClient() {
     @JvmStatic
     fun main(args: Array<String>) {
         val benchmarkService = Referer.getRefer<IBenchmarkService>()
-        val action: (Int) -> CompletableFuture<*> =
-                when(config.getString("action")!!){
-                    "cache" -> benchmarkService::getMessageFromCache
-                    "file" -> benchmarkService::getMessageFromFile
-                    "db" -> benchmarkService::getMessageFromDb
-                    else -> throw Exception("不能识别action配置: " + config.getString("action"))
-                }
+        /*val r = benchmarkService.getMessageFromDb( 1)
+        println(r.get())*/
+        val action: (Int) -> CompletableFuture<*> = getNormalAction(benchmarkService)
         // 测试
         test(action)
     }

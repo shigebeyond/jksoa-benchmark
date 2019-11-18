@@ -1,8 +1,12 @@
 package net.jkcode.jksoa.benchmark.common
 
+import com.weibo.api.motan.rpc.DefaultResponseFuture
+import com.weibo.api.motan.rpc.ResponseFuture
 import net.jkcode.jkmvc.common.Config
 import net.jkcode.jkmvc.common.currMillis
 import net.jkcode.jkmvc.common.currMillisCached
+import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
+import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import net.jkcode.jksoa.guard.measure.HashedWheelMeasurer
 import org.slf4j.LoggerFactory
 import java.util.concurrent.CompletableFuture
@@ -29,7 +33,7 @@ abstract class IBenchmarkClient {
 
     /**
      * 执行测试
-     * @param action 测试的方法调用
+     * @param action 测试调用的方法
      */
     fun test(action: (Int) -> CompletableFuture<*>) {
         currMillisCached = false
@@ -41,8 +45,7 @@ abstract class IBenchmarkClient {
         var concurrents: Int = config["concurrents"]!! // 线程数/并发数
         var requests: Int = config["requests"]!! // 请求数
         logger.info("Test start")
-        logger.info("Concurrents: $concurrents")
-        logger.info("Requests: $requests")
+        logger.info("Concurrents: $concurrents \nRequests: $requests")
         val latch = CountDownLatch(requests)
         val pool = Executors.newFixedThreadPool(concurrents)
 
@@ -61,16 +64,18 @@ abstract class IBenchmarkClient {
                     //2 添加请求耗时
                     val bucket = measurer.currentBucket()
                     val reqTime = currMillis() - reqStart
-                    bucket.addCostTime(reqTime)
+                    bucket.addRt(reqTime)
 
                     if (e == null) //3 添加成功计数
                         bucket.addSuccess()
                     else //4 添加异常计数
                         bucket.addException()
 
-                    logger.info("Response " + resps.incrementAndGet() + ": cost $reqTime ms")
-                    if(e != null)
-                        logger.error("err: " + e.message, e)
+                    if(config["logEveryRequest"]!!) {
+                        logger.info("Response " + resps.incrementAndGet() + ": cost $reqTime ms")
+                        if (e != null)
+                            logger.error("err: " + e.message, e)
+                    }
 
                     latch.countDown()
                 }
@@ -83,10 +88,7 @@ abstract class IBenchmarkClient {
         logger.info("Test end: cost $runTime ms")
 
         // 打印性能测试结果
-        logger.info("----------Benchmark Statistics--------------")
-        logger.info("Concurrents: $concurrents")
-        logger.info("Runtime: $runTime s")
-        logger.info(measurer.bucketCollection().toDesc(runTime))
+        logger.info("----------Benchmark Statistics--------------\nConcurrents: $concurrents \nRuntime: $runTime ms\n" + measurer.bucketCollection().toDesc(runTime))
     }
 
     /**
@@ -109,6 +111,80 @@ abstract class IBenchmarkClient {
         val runTime = (currMillis() - start)
         logger.info("Warmup end: cost $runTime ms")
         Thread.sleep(2000)
+    }
+
+    /**
+     * 获得正常的动作(测试调用的方法)
+     *   方法返回类型就是 CompletableFuture
+     *
+     * @param benchmarkService
+     * @return
+     */
+    protected fun getNormalAction(benchmarkService: IBenchmarkService): (Int) -> CompletableFuture<*> {
+        val action: (Int) -> CompletableFuture<*> =
+                when (config.getString("action")!!) {
+                    "nth" -> benchmarkService::doNothing
+                    "cache" -> benchmarkService::getMessageFromCache
+                    "file" -> benchmarkService::getMessageFromFile
+                    "db" -> benchmarkService::getMessageFromDb
+                    else -> throw Exception("不能识别action配置: " + config.getString("action"))
+                }
+        return tryAsyncToSync(action)
+    }
+
+    /**
+     * 异步转同步
+     */
+    protected fun tryAsyncToSync(action: (Int) -> CompletableFuture<*>): (Int) -> CompletableFuture<*>{
+        // 异步
+        if(config["async"]!!)
+            return action
+
+        // 同步
+        return {id ->
+            val f = action.invoke(id)
+            f.get()
+            f
+        }
+    }
+
+    /**
+     * 获得motan的动作(测试调用的方法)
+     *    方法返回类型就是 DefaultResponseFuture
+     *
+     * @param benchmarkService
+     * @return
+     */
+    protected fun getMotanAction(benchmarkService: IMotanBenchmarkServiceAsync): (Int) -> CompletableFuture<*> {
+        val action: (Int) -> ResponseFuture =
+                when (config.getString("action")!!) {
+                    "nth" -> benchmarkService::doNothingAsync
+                    "cache" -> benchmarkService::getMessageFromCacheAsync
+                    "file" -> benchmarkService::getMessageFromFileAsync
+                    "db" -> benchmarkService::getMessageFromDbAsync
+                    else -> throw Exception("不能识别action配置: " + config.getString("action"))
+                }
+        val action2: (Int) -> CompletableFuture<*> = { id:Int ->
+            val f = action.invoke(id)
+            toCompletableFuture(f)
+        }
+
+        return tryAsyncToSync(action2)
+    }
+
+    /**
+     * motan的 ResponseFuture 转 CompletableFuture
+     */
+    protected fun toCompletableFuture(src: ResponseFuture): CompletableFuture<Any?> {
+        val target = CompletableFuture<Any?>()
+        src.addListener { f ->
+            try{
+                target.complete(f.value)
+            }catch (e: Exception){
+                target.completeExceptionally(e)
+            }
+        }
+        return target
     }
 
 }

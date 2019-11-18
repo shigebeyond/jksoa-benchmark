@@ -15,6 +15,9 @@ dependencies {
     // motan -- ResponResponseFutureseFuture
     compile "com.weibo:motan-core:$motan_version"
 
+
+    compile "de.ruedigermoeller:fst:2.57"
+
     // test
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile 'junit:junit:4.11'

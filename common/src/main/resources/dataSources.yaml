@@ -6,14 +6,16 @@ default:
     driverClass: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1/test?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: root #'123456'
+    # password: root
+    password: '123456'
   # 多个从库, 可省略
   slaves:
     -
       driverClass: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1/test?useUnicode=true&characterEncoding=utf-8
       username: root
-      password: root #'123456'
+      # password: root
+      password: '123456'
 
 # sql server, 命名: 小写+下划线
 #default:

@@ -1,8 +1,6 @@
 #!/bin/sh
 # gradle build -x test
 
-cd build/libs
-
 JAVA_OPTS="-Djava.net.preferIPv4Stack=true -server -Xms1g -Xmx1g -XX:PermSize=128m"
 
 JAVA_DEBUG_OPTS=""

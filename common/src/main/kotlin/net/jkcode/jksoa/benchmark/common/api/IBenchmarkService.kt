@@ -6,12 +6,17 @@ import net.jkcode.jksoa.common.annotation.RemoteService
 import java.util.concurrent.CompletableFuture
 
 /**
- * 消息服务
+ * 性能测试服务
  * @author shijianhang<772910474@qq.com>
  * @date 2019-09-11 2:26 PM
  */
 @RemoteService(version = 1)
 interface IBenchmarkService {
+
+    /**
+     * 啥都不干
+     */
+    fun doNothing(id: Int): CompletableFuture<Void>
 
     /**
      * 简单输出

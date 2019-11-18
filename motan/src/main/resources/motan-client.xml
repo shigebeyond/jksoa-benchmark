@@ -36,8 +36,16 @@
                         id="motanClientBasicConfig" throwException="false" check="true"/>
 
     <!-- 具体referer配置。使用方通过beanid使用服务接口类 -->
+    <!--
     <motan:referer id="benchmarkService" directUrl="127.0.0.1:8002"
                    interface="net.jkcode.jksoa.benchmark.common.api.IBenchmarkService"
                    connectTimeout="300" requestTimeout="1000" basicReferer="motanClientBasicConfig"/>
+    -->
+
+    <!-- 具体referer配置。使用方通过beanid使用服务接口类 -->
+    <motan:referer id="asyncBenchmarkService" directUrl="127.0.0.1:8002"
+                   interface="net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync"
+                   connectTimeout="300" requestTimeout="100000000" basicReferer="motanClientBasicConfig"
+                   async="true"/>
 
 </beans>
