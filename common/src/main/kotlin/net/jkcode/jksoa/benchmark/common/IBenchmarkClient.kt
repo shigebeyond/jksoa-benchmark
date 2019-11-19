@@ -23,9 +23,14 @@ import java.util.concurrent.atomic.AtomicInteger
 abstract class IBenchmarkClient {
 
     /**
-     * 配置
+     * 性能测试配置
      */
     public val config: Config = Config.instance("benchmark", "yaml")
+
+    /**
+     * 调试配置
+     */
+    public val debugConfig: Config = Config.instance("debug", "yaml")
 
     /**
      * 日志
@@ -74,7 +79,7 @@ abstract class IBenchmarkClient {
                     else //4 添加异常计数
                         bucket.addException()
 
-                    if(config["logEveryRequest"]!!) {
+                    if(debugConfig["logEveryRequest"]!!) {
                         logger.info(MessageFormat.format("Response {0}: cost {1,number,#.##} ms", resps.incrementAndGet(), reqTime.toDouble() / rtMsFraction))
                         if (e != null)
                             logger.error("err: " + e.message, e)
@@ -86,9 +91,12 @@ abstract class IBenchmarkClient {
             }
         }
 
+        var runTime = System.nanoTime() / rtNsMultiple - start
+        logger.info(MessageFormat.format("Test request end: cost {0,number,#.##} ms", runTime.toDouble() / rtMsFraction))
+
         latch.await()
-        val runTime = System.nanoTime() / rtNsMultiple - start
-        logger.info(MessageFormat.format("Test end: cost {0,number,#.##} ms", runTime.toDouble() / rtMsFraction))
+        runTime = System.nanoTime() / rtNsMultiple - start
+        logger.info(MessageFormat.format("Test response end: cost {0,number,#.##} ms", runTime.toDouble() / rtMsFraction))
 
         // 打印性能测试结果
         logger.info("----------Benchmark Statistics--------------\nConcurrents: $concurrents\n" + measurer.bucketCollection().toDesc(runTime))

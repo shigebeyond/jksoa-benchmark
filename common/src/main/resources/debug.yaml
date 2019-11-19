@@ -1,0 +1,4 @@
+# 是否对每个请求打日志
+logEveryRequest: false
+# 是否纯sql
+pureSql: true

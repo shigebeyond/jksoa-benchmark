@@ -3,6 +3,9 @@ package net.jkcode.jksoa.benchmark.common.impl
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
+import net.jkcode.jkmvc.common.Config
+import net.jkcode.jkmvc.common.getInt
+import net.jkcode.jkmvc.common.getString
 import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jkmvc.db.Db
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
@@ -19,14 +22,19 @@ import java.util.concurrent.CompletableFuture
 class BenchmarkService: IBenchmarkService {
 
     /**
+     * 调试配置
+     */
+    public val debugConfig: Config = Config.instance("debug", "yaml")
+
+    /**
      * 基于内存的缓存
      */
-    private val cache = ICache.instance("lru")
+    protected val cache = ICache.instance("lru")
 
     /**
      * json文件
      */
-    private val file = File("messages.json")
+    protected val file = File("messages.json")
 
     // 至于db的配置见 MessageModel
 
@@ -41,7 +49,7 @@ class BenchmarkService: IBenchmarkService {
     /**
      * 建表: message
      */
-    private fun createTable() {
+    protected fun createTable() {
         val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("message.mysql.sql")
         val sql = InputStreamReader(`is`).readText()
         Db.instance().execute(sql)
@@ -50,7 +58,7 @@ class BenchmarkService: IBenchmarkService {
     /**
      * 初始化数据
      */
-    private fun initData() {
+    protected fun initData() {
         // 初始化数据
         val msgs = ArrayList<MessageEntity>()
         for (i in 1..10) {
@@ -126,7 +134,15 @@ class BenchmarkService: IBenchmarkService {
      * @return
      */
     public override fun getMessageFromDb(id: Int): CompletableFuture<MessageEntity> {
-        val msg = MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+        val msg =
+                if(debugConfig["pureSql"]!!) // 纯sql
+                     Db.instance().queryRow("select * from message where id = $id", emptyList()){row ->
+                        val msg = MessageEntity()
+                        msg.fromMap(row)
+                        msg
+                    }
+                else // orm
+                    MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
         return CompletableFuture.completedFuture(msg)
     }
 

@@ -1,12 +1,10 @@
 # 并发数
 concurrents: 10
 # 请求数
-requests: 1000
+requests: 10000
 # 热身请求数
-warmupRequests: 100
+warmupRequests: 1000
 # 动作: nth/cache/file/db
-action: nth
-# 是否对每个请求打日志
-logEveryRequest: false
+action: db
 # 是否异步
 async: false
