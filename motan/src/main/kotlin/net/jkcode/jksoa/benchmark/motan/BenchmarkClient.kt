@@ -1,10 +1,10 @@
 package net.jkcode.jksoa.benchmark.motan
 
+import net.jkcode.jkmvc.common.Config
+import net.jkcode.jksoa.benchmark.common.BenchmarkTest
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
-import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import org.springframework.context.support.ClassPathXmlApplicationContext
-import java.util.concurrent.CompletableFuture
 
 /**
  * 性能测试
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-object BenchmarkClient : IBenchmarkClient() {
+object BenchmarkClient: IBenchmarkClient("motan") {
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -21,9 +21,10 @@ object BenchmarkClient : IBenchmarkClient() {
         val benchmarkService = context.getBean("asyncBenchmarkService", IMotanBenchmarkServiceAsync::class.java)
         /*val f = benchmarkService.getMessageFromDbAsync(1)
         println(f.value)*/
-        val action: (Int) -> CompletableFuture<*> = getMotanAction(benchmarkService)
+
         // 测试
-        test(action)
+        //run1Test(benchmarkService)
+        runAllTest(benchmarkService)
     }
 
 }

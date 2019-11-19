@@ -1,10 +1,10 @@
+# 动作: nth/cache/file/db
+action: db
 # 并发数
 concurrents: 10
 # 请求数
 requests: 10000
 # 热身请求数
 warmupRequests: 1000
-# 动作: nth/cache/file/db
-action: db
 # 是否异步
-async: false
+async: true
