@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
 import net.jkcode.jkmvc.common.Config
-import net.jkcode.jkmvc.common.getInt
-import net.jkcode.jkmvc.common.getString
 import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jkmvc.db.Db
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
@@ -50,9 +48,11 @@ class BenchmarkService: IBenchmarkService {
      * 建表: message
      */
     protected fun createTable() {
-        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("message.mysql.sql")
-        val sql = InputStreamReader(`is`).readText()
-        Db.instance().execute(sql)
+        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("benchmark.sql")
+        val txt = InputStreamReader(`is`).readText()
+        val sqls = txt.split(";\\s+".toRegex())
+        for(sql in sqls)
+            Db.instance().execute(sql)
     }
 
     /**

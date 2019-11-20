@@ -11,7 +11,6 @@ import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService
 import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import java.io.File
 import java.io.InputStreamReader
-import java.util.concurrent.CompletableFuture
 
 /**
  * 性能测试服务
@@ -49,7 +48,7 @@ class MotanBenchmarkService: IMotanBenchmarkService {
      * 建表: message
      */
     private fun createTable() {
-        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("message.mysql.sql")
+        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("benchmark.sql")
         val sql = InputStreamReader(`is`).readText()
         Db.instance().execute(sql)
     }
