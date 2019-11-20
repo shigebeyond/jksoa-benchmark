@@ -7,3 +7,4 @@ jetty/
 logs/
 tmp/
 zookeeper.out
+messages.json

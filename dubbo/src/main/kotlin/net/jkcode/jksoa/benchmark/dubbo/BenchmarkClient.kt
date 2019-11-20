@@ -23,8 +23,7 @@ object BenchmarkClient: IBenchmarkClient("dubbo") {
         println(r.get())*/
 
         // 测试
-        //run1Test(benchmarkService)
-        runAllTest(benchmarkService)
+        runTest(benchmarkService)
     }
 
 }

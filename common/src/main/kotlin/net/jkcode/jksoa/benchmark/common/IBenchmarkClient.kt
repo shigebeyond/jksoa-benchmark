@@ -16,9 +16,15 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
     public val debugConfig: Config = Config.instance("debug", "yaml")
 
     /**
-     * 日志
+     * 所有场景测试的过程日志
      */
-    public val logger = LoggerFactory.getLogger(this.javaClass)
+    public val roundLogger = LoggerFactory.getLogger("net.jkcode.jksoa.benchmark.round")
+
+    /**
+     * 所有场景测试的结果日志
+     * 格式: 2019-11-20 17:00:28 [INFO] file-c10-n40000-syn | Runtime: 1431.09 ms, Avg TPS: 27950.64, Avg RT: 0.36ms
+     */
+    public val resultLogger = LoggerFactory.getLogger("net.jkcode.jksoa.benchmark.result")
 
     /**
      * 列出所有场景的配置
@@ -34,9 +40,9 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
         val requestses:List<Int> = allConfig["requests"]!!
         val asyncs: List<Boolean> = allConfig["async"]!!
 
-        for (concurrents in concurrentses)
-            for (requests in requestses)
-                for (action in actions)
+        for (action in actions)
+            for (concurrents in concurrentses)
+                for (requests in requestses)
                     for (async in asyncs) {
                         val map = mapOf<String, Any>(
                                 "action" to action, // 动作
@@ -65,8 +71,10 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
      * @param benchmarkService
      */
     protected fun run1Test(benchmarkService: Any){
+        roundLogger.info("----------$name Run1Test\n")
         val test = BenchmarkTest(name, Config.instance("benchmark", "yaml"))
-        test.run(benchmarkService)
+        val result = test.run(benchmarkService)
+        roundLogger.info("result: \n$result\n")
     }
 
     /**
@@ -76,16 +84,41 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
      * @param benchmarkService
      */
     protected fun runAllTest(benchmarkService: Any){
+        roundLogger.info("----------$name RunAllTest\n")
         for(config in listAllConfigs()) {
-            // 尝试5遍
-            // 取最优: 耗时最短
-            // 直接打印吧
-            for(i in 0..5) {
+            roundLogger.info("----------$name Benchmark Statistics--------------\n${config.props}\n")
+            // 尝试多遍
+            val results = ArrayList<BenchmarkResult>()
+            val tryCount: Int = debugConfig["tryCount"]!!
+            if(tryCount < 1)
+                throw Exception("配置项[tryCount]必须为正整数")
+            for(i in 0 until tryCount) {
+                // 测试
                 val test = BenchmarkTest(name, config)
                 val result = test.run(benchmarkService)
-                logger.info("----------$name Benchmark Statistics--------------\n${config.props}\n$result")
+                results.add(result)
+                // 直接打印
+                roundLogger.info("+++ Round ${i + 1} result: \n$result\n")
+                Thread.sleep(3000)
             }
+            // 取最优结果: 耗时最短
+            val bestResult = results.min()!!
+            roundLogger.info(">>> Best result: \n$bestResult\n")
+            resultLogger.info(toSummary(config) + " | " + bestResult.toSummary())
         }
+    }
+
+    /**
+     * 简写配置名
+     * @param config
+     * @return
+     */
+    protected fun toSummary(config: Config): String {
+        val action: String = config["action"]!! // 动作
+        val concurrents: Int = config["concurrents"]!! // 线程数/并发数
+        val requests: Int = config["requests"]!! // 请求数
+        val async: Boolean = config["async"]!! // 是否异步
+        return "$action-c$concurrents-n$requests-" + if(async) "asyn" else "syn"
     }
 
 }

@@ -136,14 +136,11 @@ class MotanBenchmarkService: IMotanBenchmarkService {
     public override fun getMessageFromDb(i: Int): MessageEntity? {
         try {
             val id = i % 10 + 1
-            return if (debugConfig["pureSql"]!!) // 纯sql
-                        Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
-                            val msg = MessageEntity()
-                            msg.fromMap(row)
-                            msg
-                        }
-                    else // orm
-                        MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+            return Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
+                        val msg = MessageEntity()
+                        msg.fromMap(row)
+                        msg
+                    }
         }finally {
             // 关闭db
             Db.instance().closeAndClear()

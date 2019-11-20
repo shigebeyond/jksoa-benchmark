@@ -15,11 +15,11 @@ object BenchmarkClient: IBenchmarkClient("jksoa")  {
     @JvmStatic
     fun main(args: Array<String>) {
         val benchmarkService = Referer.getRefer<IBenchmarkService>()
-        val r = benchmarkService.getMessageFromDb( 1)
-        println(r.get())
+        /*val r = benchmarkService.getMessageFromDb( 1)
+        println(r.get())*/
 
-//        // 测试
-        //runTest(benchmarkService)
+        // 测试
+        runTest(benchmarkService)
     }
 
 }

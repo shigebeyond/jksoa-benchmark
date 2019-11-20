@@ -1,12 +1,10 @@
 package net.jkcode.jksoa.benchmark.common
 
-import com.weibo.api.motan.rpc.DefaultResponseFuture
 import com.weibo.api.motan.rpc.ResponseFuture
 import net.jkcode.jkmvc.common.Config
 import net.jkcode.jkmvc.common.currMillis
 import net.jkcode.jkmvc.common.currMillisCached
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
-import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import net.jkcode.jksoa.guard.measure.HashedWheelMeasurer
 import net.jkcode.jksoa.guard.measure.IMetricBucket
@@ -28,6 +26,10 @@ class BenchmarkResult(
 
     override fun toString(): String {
         return bucket.toDesc(runTime)
+    }
+
+    public fun toSummary(): String {
+        return bucket.toSummary(runTime)
     }
 
     override fun compareTo(other: BenchmarkResult): Int {
@@ -84,8 +86,9 @@ class BenchmarkTest(
         warmup(action)
 
         // 性能测试
-        var concurrents: Int = config["concurrents"]!! // 线程数/并发数
-        var requests: Int = config["requests"]!! // 请求数
+        val concurrents: Int = config["concurrents"]!! // 线程数/并发数
+        val requests: Int = config["requests"]!! // 请求数
+        val logEveryRequest: Boolean = debugConfig["logEveryRequest"]!!
         logger.info("Test start")
         logger.info(config.props.toString())
         val latch = CountDownLatch(requests)
@@ -115,7 +118,7 @@ class BenchmarkTest(
                     else //4 添加异常计数
                         bucket.addException()
 
-                    if (debugConfig["logEveryRequest"]!!) {
+                    if (logEveryRequest) {
                         logger.info(MessageFormat.format("Response {0}: cost {1,number,#.##} ms", resps.incrementAndGet(), reqTime.toDouble() / rtMsFraction))
                         if (e != null)
                             logger.error("err: " + e.message, e)
@@ -163,7 +166,7 @@ class BenchmarkTest(
         latch.await()
         val runTime = (currMillis() - start)
         logger.info("Warmup end: cost $runTime ms")
-        Thread.sleep(2000)
+        Thread.sleep(3000)
     }
 
     /**

@@ -138,15 +138,11 @@ class BenchmarkService: IBenchmarkService {
     public override fun getMessageFromDb(i: Int): CompletableFuture<MessageEntity> {
         try {
             val id = i % 10 + 1
-            val msg =
-                    if (debugConfig["pureSql"]!!) // 纯sql
-                        Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
-                            val msg = MessageEntity()
-                            msg.fromMap(row)
-                            msg
-                        }
-                    else // orm
-                        MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+            val msg = Db.instance().queryRow("select * from message where id = $id") { row ->
+                        val msg = MessageEntity()
+                        msg.fromMap(row)
+                        msg
+                    }
             return CompletableFuture.completedFuture(msg)
         }finally {
             // 关闭db

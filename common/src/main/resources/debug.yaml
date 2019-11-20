@@ -1,6 +1,6 @@
 # 是否运行benchmarks.yaml 所有场景的性能测试, 否则运行benchmark.yaml 单一场景的性能测试
-all: false
+all: true
+# 每个场景的测试次数, 仅在 all=true 时有效
+tryCount: 5
 # 是否对每个请求打日志
 logEveryRequest: false
-# 是否纯sql
-pureSql: true

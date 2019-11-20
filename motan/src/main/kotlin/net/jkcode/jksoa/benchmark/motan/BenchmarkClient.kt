@@ -23,8 +23,7 @@ object BenchmarkClient: IBenchmarkClient("motan") {
         println(f.value)*/
 
         // 测试
-        //run1Test(benchmarkService)
-        runAllTest(benchmarkService)
+        runTest(benchmarkService)
     }
 
 }
