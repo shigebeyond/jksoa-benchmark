@@ -1,6 +1,7 @@
 package net.jkcode.jksoa.benchmark.common
 
 import net.jkcode.jkmvc.common.Config
+import org.slf4j.LoggerFactory
 
 /**
  * 性能测试 -- client
@@ -10,17 +11,28 @@ import net.jkcode.jkmvc.common.Config
 abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
 
     /**
+     * 调试的配置
+     */
+    public val debugConfig: Config = Config.instance("debug", "yaml")
+
+    /**
+     * 日志
+     */
+    public val logger = LoggerFactory.getLogger(this.javaClass)
+
+    /**
      * 列出所有场景的配置
      * @return
      */
-    fun listAllConfigs(): ArrayList<Config> {
+    public fun listAllConfigs(): ArrayList<Config> {
+        val allConfig = Config.instance("benchmarks", "yaml")
         val configs = ArrayList<Config>()
 
         // 构建每个场景的配置
-        val actions = arrayOf("nth", "cache", "file", "db")
-        val concurrentses = arrayOf(1, 10, 20, 50)
-        val requestses = arrayOf(10000, 20000, 30000, 40000, 50000)
-        val asyncs = arrayOf(false, true)
+        val actions:List<String> = allConfig["action"]!!
+        val concurrentses: List<Int> = allConfig["concurrents"]!!
+        val requestses:List<Int> = allConfig["requests"]!!
+        val asyncs: List<Boolean> = allConfig["async"]!!
 
         for (concurrents in concurrentses)
             for (requests in requestses)
@@ -30,7 +42,6 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
                                 "action" to action, // 动作
                                 "concurrents" to concurrents, // 并发数
                                 "requests" to requests, // 请求数
-                                "warmupRequests" to 1000, // 热身请求数
                                 "async" to async // 是否异步
                         )
                         configs.add(Config(map))
@@ -39,31 +50,41 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
     }
 
     /**
-     * 运行 benchmark.yaml 指定场景的性能测试
+     * 运行性能测试
      * @param benchmarkService
      */
-    fun run1Test(benchmarkService: Any){
+    public fun runTest(benchmarkService: Any){
+        if(debugConfig["all"]!!)
+            runAllTest(benchmarkService)
+        else
+            run1Test(benchmarkService)
+    }
+
+    /**
+     * 运行 benchmark.yaml 单一场景的性能测试
+     * @param benchmarkService
+     */
+    protected fun run1Test(benchmarkService: Any){
         val test = BenchmarkTest(name, Config.instance("benchmark", "yaml"))
         test.run(benchmarkService)
     }
 
     /**
-     * 运行所有场景的性能测试
+     * 运行 benchmarks.yaml 所有场景的性能测试
      *    全自动化测试, 多测几遍, 取最优
      *
      * @param benchmarkService
      */
-    fun runAllTest(benchmarkService: Any){
+    protected fun runAllTest(benchmarkService: Any){
         for(config in listAllConfigs()) {
             // 尝试5遍
-            val results = (0..5).map {
-                val test = BenchmarkTest(name, config)
-                test.run(benchmarkService)
-            }
-
             // 取最优: 耗时最短
-            val result = results.min()
-
+            // 直接打印吧
+            for(i in 0..5) {
+                val test = BenchmarkTest(name, config)
+                val result = test.run(benchmarkService)
+                logger.info("----------$name Benchmark Statistics--------------\n${config.props}\n$result")
+            }
         }
     }
 

@@ -87,7 +87,7 @@ class BenchmarkTest(
         var concurrents: Int = config["concurrents"]!! // 线程数/并发数
         var requests: Int = config["requests"]!! // 请求数
         logger.info("Test start")
-        logger.info("Concurrents: $concurrents \nRequests: $requests")
+        logger.info(config.props.toString())
         val latch = CountDownLatch(requests)
         val pool = Executors.newFixedThreadPool(concurrents)
 
@@ -103,7 +103,7 @@ class BenchmarkTest(
                 val reqStart = System.nanoTime() / rtNsMultiple
 
                 // rpc
-                val future = action.invoke(i % 10 + 1)
+                val future = action.invoke(i)
                 future.whenComplete { r, e ->
                     //2 添加请求耗时
                     val bucket = measurer.currentBucket()
@@ -136,7 +136,7 @@ class BenchmarkTest(
 
         // 打印性能测试结果
         val result = BenchmarkResult(measurer.bucketCollection(), runTime)
-        logger.info("----------$name Benchmark Statistics--------------\nConcurrents: $concurrents\n$result")
+        logger.info("----------$name Benchmark Statistics--------------\n${config.props}\n$result")
 
         pool.shutdownNow()
 
@@ -150,12 +150,12 @@ class BenchmarkTest(
      */
     protected fun warmup(action: (Int) -> CompletableFuture<*>) {
         val start = currMillis()
-        var requests: Int = config["warmupRequests"]!! // 热身请求数
+        var requests: Int = 1000 //config["warmupRequests"]!! // 热身请求数
         logger.info("Warmup start")
         logger.info("Requests: $requests")
         val latch = CountDownLatch(requests)
         for(i in 1..requests){
-            val future = action.invoke(i % 10 + 1)
+            val future = action.invoke(i)
             future.whenComplete { r, ex ->
                 latch.countDown()
             }

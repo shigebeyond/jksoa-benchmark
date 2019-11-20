@@ -1,4 +1,4 @@
-package net.jkcode.jksoa.benchmark.rpc
+package net.jkcode.jksoa.benchmark.jksoa
 
 import net.jkcode.jksoa.rpc.server.RpcServerLauncher
 

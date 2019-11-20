@@ -1,0 +1,23 @@
+# 动作: nth/cache/file/db
+action:
+  - nth
+  - cache
+  - file
+  - db
+# 并发数
+concurrents:
+  - 1
+  - 10
+  - 20
+  - 50
+# 请求数
+requests:
+  - 10000
+  - 20000
+  - 30000
+  - 40000
+  - 50000
+# 是否异步
+async:
+  - false
+  - true

@@ -3,6 +3,7 @@ package net.jkcode.jksoa.benchmark.common.impl.motan
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import net.jkcode.jkmvc.cache.ICache
+import net.jkcode.jkmvc.common.Config
 import net.jkcode.jkmvc.common.randomInt
 import net.jkcode.jkmvc.db.Db
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
@@ -10,6 +11,7 @@ import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService
 import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import java.io.File
 import java.io.InputStreamReader
+import java.util.concurrent.CompletableFuture
 
 /**
  * 性能测试服务
@@ -17,6 +19,11 @@ import java.io.InputStreamReader
  * @date 2019-10-29 8:32 PM
  */
 class MotanBenchmarkService: IMotanBenchmarkService {
+
+    /**
+     * 调试配置
+     */
+    public val debugConfig: Config = Config.instance("debug", "yaml")
 
     /**
      * 基于内存的缓存
@@ -78,7 +85,7 @@ class MotanBenchmarkService: IMotanBenchmarkService {
     /**
      * 啥都不干
      */
-    public override fun doNothing(id: Int): Void?{
+    public override fun doNothing(i: Int): Void?{
         return null
     }
 
@@ -94,10 +101,11 @@ class MotanBenchmarkService: IMotanBenchmarkService {
      * 从缓存中获得消息
      *    测试读缓存
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromCache(id: Int): MessageEntity? {
+    public override fun getMessageFromCache(i: Int): MessageEntity? {
+        val id = i  % 10 + 1
         return cache.get(id) as MessageEntity
     }
 
@@ -105,10 +113,11 @@ class MotanBenchmarkService: IMotanBenchmarkService {
      * 从文件获得消息
      *    测试读文件
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromFile(id: Int): MessageEntity? {
+    public override fun getMessageFromFile(i: Int): MessageEntity? {
+        val id = i  % 10 + 1
         val json = file.readText()
         val msgs = JSONObject.parseArray(json, MessageEntity::class.java)
         val msg = msgs.first{
@@ -121,11 +130,24 @@ class MotanBenchmarkService: IMotanBenchmarkService {
      * 从db获得消息
      *   测试读db
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromDb(id: Int): MessageEntity? {
-        return MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+    public override fun getMessageFromDb(i: Int): MessageEntity? {
+        try {
+            val id = i % 10 + 1
+            return if (debugConfig["pureSql"]!!) // 纯sql
+                        Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
+                            val msg = MessageEntity()
+                            msg.fromMap(row)
+                            msg
+                        }
+                    else // orm
+                        MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+        }finally {
+            // 关闭db
+            Db.instance().closeAndClear()
+        }
     }
 
 }

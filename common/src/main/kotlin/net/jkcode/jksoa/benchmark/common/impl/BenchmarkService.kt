@@ -102,11 +102,12 @@ class BenchmarkService: IBenchmarkService {
      * 从缓存中获得消息
      *    测试读缓存
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromCache(id: Int): CompletableFuture<MessageEntity> {
-        val msg = cache.get(id) as MessageEntity
+    public override fun getMessageFromCache(i: Int): CompletableFuture<MessageEntity> {
+        val id = i  % 10 + 1
+        val msg = cache.get(id  % 10 + 1) as MessageEntity
         return CompletableFuture.completedFuture(msg)
     }
 
@@ -114,10 +115,11 @@ class BenchmarkService: IBenchmarkService {
      * 从文件获得消息
      *    测试读文件
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromFile(id: Int): CompletableFuture<MessageEntity> {
+    public override fun getMessageFromFile(i: Int): CompletableFuture<MessageEntity> {
+        val id = i  % 10 + 1
         val json = file.readText()
         val msgs = JSONObject.parseArray(json, MessageEntity::class.java)
         val msg = msgs.first{
@@ -130,20 +132,26 @@ class BenchmarkService: IBenchmarkService {
      * 从db获得消息
      *   测试读db
      *
-     * @param id
+     * @param i
      * @return
      */
-    public override fun getMessageFromDb(id: Int): CompletableFuture<MessageEntity> {
-        val msg =
-                if(debugConfig["pureSql"]!!) // 纯sql
-                     Db.instance().queryRow("select * from message where id = $id", emptyList()){row ->
-                        val msg = MessageEntity()
-                        msg.fromMap(row)
-                        msg
-                    }
-                else // orm
-                    MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
-        return CompletableFuture.completedFuture(msg)
+    public override fun getMessageFromDb(i: Int): CompletableFuture<MessageEntity> {
+        try {
+            val id = i % 10 + 1
+            val msg =
+                    if (debugConfig["pureSql"]!!) // 纯sql
+                        Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
+                            val msg = MessageEntity()
+                            msg.fromMap(row)
+                            msg
+                        }
+                    else // orm
+                        MessageModel.queryBuilder().where("id", "=", id).findEntity<MessageModel, MessageEntity>()
+            return CompletableFuture.completedFuture(msg)
+        }finally {
+            // 关闭db
+            Db.instance().closeAndClear()
+        }
     }
 
 }

@@ -1,3 +1,5 @@
+# 是否运行benchmarks.yaml 所有场景的性能测试, 否则运行benchmark.yaml 单一场景的性能测试
+all: false
 # 是否对每个请求打日志
 logEveryRequest: false
 # 是否纯sql

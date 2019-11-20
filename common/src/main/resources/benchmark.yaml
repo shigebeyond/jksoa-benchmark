@@ -4,7 +4,5 @@ action: db
 concurrents: 10
 # 请求数
 requests: 10000
-# 热身请求数
-warmupRequests: 1000
 # 是否异步
 async: true
