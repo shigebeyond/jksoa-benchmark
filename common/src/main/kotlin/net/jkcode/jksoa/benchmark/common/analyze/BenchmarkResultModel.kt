@@ -16,7 +16,9 @@ class  BenchmarkResultModel(id:Int? = null): Orm(id) {
 	// 代理属性读写
 	public var id:Int by property() // 结果id 
 
-	public var action:String by property() // 动作 
+	public var tech:String by property() // 技术: jksoa/dubbo/motan
+
+	public var action:String by property() // 动作: nth/cache/file/db
 
 	public var concurrents:Int by property() // 并发数 
 
@@ -29,5 +31,7 @@ class  BenchmarkResultModel(id:Int? = null): Orm(id) {
 	public var tps:Double by property() // 吞吐量
 
 	public var rt:Double by property() // 响应时间
+
+	public var errPct:Int by property() // 错误百分比
 
 }

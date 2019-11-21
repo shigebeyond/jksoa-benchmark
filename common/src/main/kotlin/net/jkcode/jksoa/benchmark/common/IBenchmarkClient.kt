@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
+abstract class IBenchmarkClient(public val tech: String /* 技术: jksoa/dubbo/motan */) {
 
     /**
      * 调试的配置
@@ -71,8 +71,8 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
      * @param benchmarkService
      */
     protected fun run1Test(benchmarkService: Any){
-        roundLogger.info("----------$name Run1Test\n")
-        val test = BenchmarkTest(name, Config.instance("benchmark", "yaml"))
+        roundLogger.info("----------$tech Run1Test\n")
+        val test = BenchmarkTest(tech, Config.instance("benchmark", "yaml"))
         val result = test.run(benchmarkService)
         roundLogger.info("result: \n$result\n")
     }
@@ -84,9 +84,9 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
      * @param benchmarkService
      */
     protected fun runAllTest(benchmarkService: Any){
-        roundLogger.info("----------$name RunAllTest\n")
+        roundLogger.info("----------$tech RunAllTest\n")
         for(config in listAllConfigs()) {
-            roundLogger.info("----------$name Benchmark Statistics--------------\n${config.props}\n")
+            roundLogger.info("----------$tech Benchmark Statistics--------------\n${config.props}\n")
             // 尝试多遍
             val results = ArrayList<BenchmarkResult>()
             val tryCount: Int = debugConfig["tryCount"]!!
@@ -94,7 +94,7 @@ abstract class IBenchmarkClient(public val name: String /* 测试名 */) {
                 throw Exception("配置项[tryCount]必须为正整数")
             for(i in 0 until tryCount) {
                 // 测试
-                val test = BenchmarkTest(name, config)
+                val test = BenchmarkTest(tech, config)
                 val result = test.run(benchmarkService)
                 results.add(result)
                 // 直接打印

@@ -1,7 +1,0 @@
-# 按组件来切换日志级别: trace/debug/debug/warn/error
-common: debug
-rpc: debug
-job: debug
-guard: debug
-tracer: debug
-mq: debug
