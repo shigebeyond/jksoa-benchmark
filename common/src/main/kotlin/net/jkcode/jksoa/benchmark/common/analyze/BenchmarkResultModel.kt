@@ -11,7 +11,7 @@ import net.jkcode.jkmvc.orm.Orm
  */
 class  BenchmarkResultModel(id:Int? = null): Orm(id) {
 	// 伴随对象就是元数据
- 	companion object m: OrmMeta(BenchmarkResultModel::class, "性能测试结果", "benchmark_result", "id"){}
+ 	companion object m: OrmMeta(BenchmarkResultModel::class, "性能测试结果", "rpc_benchmark_result", "id"){}
 
 	// 代理属性读写
 	public var id:Int by property() // 结果id 

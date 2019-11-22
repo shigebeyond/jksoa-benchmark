@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息';
 
 -- 性能测试结果
-CREATE TABLE IF NOT EXISTS `benchmark_result` (
+CREATE TABLE IF NOT EXISTS `rpc_benchmark_result` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '结果id',
 	`tech` varchar(50) NOT NULL DEFAULT '' COMMENT '技术: jksoa/dubbo/motan',
 	`action` varchar(50) NOT NULL DEFAULT '' COMMENT '动作: nth/cache/file/db',

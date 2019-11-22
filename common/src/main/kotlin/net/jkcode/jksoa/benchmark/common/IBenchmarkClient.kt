@@ -89,10 +89,10 @@ abstract class IBenchmarkClient(public val tech: String /* 技术: jksoa/dubbo/m
             roundLogger.info("----------$tech Benchmark Statistics--------------\n${config.props}\n")
             // 尝试多遍
             val results = ArrayList<BenchmarkResult>()
-            val tryCount: Int = debugConfig["tryCount"]!!
-            if(tryCount < 1)
-                throw Exception("配置项[tryCount]必须为正整数")
-            for(i in 0 until tryCount) {
+            val roundCount: Int = debugConfig["roundCount"]!!
+            if(roundCount < 1)
+                throw Exception("配置项[roundCount]必须为正整数")
+            for(i in 0 until roundCount) {
                 // 测试
                 val test = BenchmarkTest(tech, config)
                 val result = test.run(benchmarkService)

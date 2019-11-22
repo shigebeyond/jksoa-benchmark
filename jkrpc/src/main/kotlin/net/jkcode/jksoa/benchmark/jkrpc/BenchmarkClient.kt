@@ -1,4 +1,4 @@
-package net.jkcode.jksoa.benchmark.jksoa
+package net.jkcode.jksoa.benchmark.jkrpc
 
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService

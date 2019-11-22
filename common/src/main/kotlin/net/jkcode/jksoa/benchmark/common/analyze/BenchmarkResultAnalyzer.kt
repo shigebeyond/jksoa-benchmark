@@ -10,7 +10,7 @@ import java.lang.IllegalArgumentException
  * @author shijianhang<772910474@qq.com>
  * @date 2019-11-20 21:20:33
  */
-object BenchmarkAnalyzer {
+object BenchmarkResultAnalyzer {
 
     /**
      * 解析结果日志

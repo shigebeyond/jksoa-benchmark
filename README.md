@@ -7,9 +7,9 @@
 
 以下是我们测试的结果：
 
-### 测试环境
+## 测试环境
 
-#### 硬件配置
+### 硬件配置
 
      Server端：
      CPU：model name:Intel(R) Xeon(R) CPU E5-2620 v2 @ 2.10GHz,cache size: 15360 KB,processor_count : 24
@@ -23,7 +23,7 @@
      网络：千兆网卡
      硬盘：900GB
 
-#### 软件配置
+### 软件配置
 
      JDK版本：
      java version "1.8.0_172"
@@ -33,13 +33,13 @@
      JVM参数：
      java -Djava.net.preferIPv4Stack=true -server -Xms1g -Xmx1g -XX:PermSize=128m
 
-### 测试脚本
+## 测试脚本
 
-#### Server测试场景：
+### Server测试场景：
 
     并发多个Client，连接数50，并发数100，测试Server极限性能
 
-#### Client测试场景：
+### Client测试场景：
 
     单客户端，10连接，在并发数分别为1，10，20，50的情况下，分别进行如下场景测试：
     - 传入空包，不做任何处理，原样返回
@@ -51,15 +51,15 @@
     - 传入30kString，不做任何处理，原样返回
     - 传入50kString，不做任何处理，原样返回。
 
-### 测试结果
+## 测试结果
 
-#### Server测试结果：
+### Server测试结果：
 
     请求空包：单Server极限TPS：18W
     请求1KString：单Server极限TPS：8.4W
     请求5KString：单Server极限TPS：2W
 
-#### Client测试结果：
+### Client测试结果：
 
 对比图：
 

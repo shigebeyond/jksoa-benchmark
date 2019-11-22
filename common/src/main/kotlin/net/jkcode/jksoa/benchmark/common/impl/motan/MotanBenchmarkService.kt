@@ -136,10 +136,10 @@ class MotanBenchmarkService: IMotanBenchmarkService {
         try {
             val id = i % 10 + 1
             return Db.instance().queryRow("select * from message where id = $id", emptyList()) { row ->
-                        val msg = MessageEntity()
-                        msg.fromMap(row)
-                        msg
-                    }
+                val msg = MessageEntity()
+                msg.fromRow(row, true)
+                msg
+            }
         }finally {
             // 关闭db
             Db.instance().closeAndClear()
