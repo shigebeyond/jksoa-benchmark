@@ -1,6 +1,6 @@
 package net.jkcode.jksoa.benchmark.jkrpc
 
-import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
+import net.jkcode.jksoa.benchmark.common.IBenchmarkApp
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.rpc.client.referer.Referer
 
@@ -10,7 +10,7 @@ import net.jkcode.jksoa.rpc.client.referer.Referer
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-object BenchmarkClient: IBenchmarkClient("jksoa")  {
+object BenchmarkClient: IBenchmarkApp("jksoa")  {
 
     @JvmStatic
     fun main(args: Array<String>) {

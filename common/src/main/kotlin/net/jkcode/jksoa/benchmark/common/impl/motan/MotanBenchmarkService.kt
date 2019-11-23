@@ -20,9 +20,9 @@ import java.io.InputStreamReader
 class MotanBenchmarkService: IMotanBenchmarkService {
 
     /**
-     * 调试配置
+     * 应用配置
      */
-    public val debugConfig: Config = Config.instance("debug", "yaml")
+    public val appConfig: Config = Config.instance("app", "yaml")
 
     /**
      * 基于内存的缓存

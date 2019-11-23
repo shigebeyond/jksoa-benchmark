@@ -4,16 +4,16 @@ import net.jkcode.jkutil.common.Config
 import org.slf4j.LoggerFactory
 
 /**
- * 性能测试 -- client
+ * 性能测试应用
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-abstract class IBenchmarkClient(public val tech: String /* 技术: jksoa/dubbo/motan */) {
+abstract class IBenchmarkApp(public val tech: String /* 技术: jksoa/dubbo/motan */) {
 
     /**
      * 调试的配置
      */
-    public val debugConfig: Config = Config.instance("debug", "yaml")
+    public val appConfig: Config = Config.instance("app", "yaml")
 
     /**
      * 所有场景测试的过程日志
@@ -60,7 +60,7 @@ abstract class IBenchmarkClient(public val tech: String /* 技术: jksoa/dubbo/m
      * @param benchmarkService
      */
     public fun runTest(benchmarkService: Any){
-        if(debugConfig["all"]!!)
+        if(appConfig["all"]!!)
             runAllTest(benchmarkService)
         else
             run1Test(benchmarkService)
@@ -89,7 +89,7 @@ abstract class IBenchmarkClient(public val tech: String /* 技术: jksoa/dubbo/m
             roundLogger.info("----------$tech Benchmark Statistics--------------\n${config.props}\n")
             // 尝试多遍
             val results = ArrayList<BenchmarkResult>()
-            val roundCount: Int = debugConfig["roundCount"]!!
+            val roundCount: Int = appConfig["roundCount"]!!
             if(roundCount < 1)
                 throw Exception("配置项[roundCount]必须为正整数")
             for(i in 0 until roundCount) {

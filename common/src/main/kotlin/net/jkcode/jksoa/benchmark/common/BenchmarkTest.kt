@@ -48,9 +48,9 @@ class BenchmarkTest(
 ) {
 
     /**
-     * 调试配置
+     * 应用配置
      */
-    public val debugConfig: Config = Config.instance("debug", "yaml")
+    public val appConfig: Config = Config.instance("app", "yaml")
 
     /**
      * 日志
@@ -88,7 +88,7 @@ class BenchmarkTest(
         // 性能测试
         val concurrents: Int = config["concurrents"]!! // 线程数/并发数
         val requests: Int = config["requests"]!! // 请求数
-        val logEveryRequest: Boolean = debugConfig["logEveryRequest"]!!
+        val logEveryRequest: Boolean = appConfig["logEveryRequest"]!!
         logger.info("Test start")
         logger.info(config.props.toString())
         val latch = CountDownLatch(requests)

@@ -1,8 +1,6 @@
 package net.jkcode.jksoa.benchmark.motan
 
-import net.jkcode.jkutil.common.Config
-import net.jkcode.jksoa.benchmark.common.BenchmarkTest
-import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
+import net.jkcode.jksoa.benchmark.common.IBenchmarkApp
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import org.springframework.context.support.ClassPathXmlApplicationContext
 
@@ -12,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-object BenchmarkClient: IBenchmarkClient("motan") {
+object BenchmarkClient: IBenchmarkApp("motan") {
 
     @JvmStatic
     fun main(args: Array<String>) {
