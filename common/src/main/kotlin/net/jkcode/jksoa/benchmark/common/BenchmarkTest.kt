@@ -1,9 +1,9 @@
 package net.jkcode.jksoa.benchmark.common
 
 import com.weibo.api.motan.rpc.ResponseFuture
-import net.jkcode.jkmvc.common.Config
-import net.jkcode.jkmvc.common.currMillis
-import net.jkcode.jkmvc.common.currMillisCached
+import net.jkcode.jkutil.common.Config
+import net.jkcode.jkutil.common.currMillis
+import net.jkcode.jkutil.common.currMillisCached
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
 import net.jkcode.jksoa.guard.measure.HashedWheelMeasurer

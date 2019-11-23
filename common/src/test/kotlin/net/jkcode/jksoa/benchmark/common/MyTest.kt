@@ -2,15 +2,14 @@ package net.jkcode.jksoa.benchmark.common
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
-import net.jkcode.jkmvc.common.randomInt
+import net.jkcode.jkutil.common.randomInt
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import net.jkcode.jksoa.benchmark.common.impl.BenchmarkService
 import org.junit.Test
-import net.jkcode.jkmvc.serialize.ISerializer
+import net.jkcode.jkutil.serialize.ISerializer
 import net.jkcode.jksoa.benchmark.common.impl.MessageModel
 import net.jkcode.jksoa.common.RpcResponse
 import java.io.File
-import java.text.MessageFormat
 import java.util.*
 import kotlin.collections.ArrayList
 

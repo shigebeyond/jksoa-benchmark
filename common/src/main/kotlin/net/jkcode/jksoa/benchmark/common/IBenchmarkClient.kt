@@ -1,6 +1,6 @@
 package net.jkcode.jksoa.benchmark.common
 
-import net.jkcode.jkmvc.common.Config
+import net.jkcode.jkutil.common.Config
 import org.slf4j.LoggerFactory
 
 /**

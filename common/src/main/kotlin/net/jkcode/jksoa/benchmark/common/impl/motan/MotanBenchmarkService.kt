@@ -2,9 +2,9 @@ package net.jkcode.jksoa.benchmark.common.impl.motan
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
-import net.jkcode.jkmvc.cache.ICache
-import net.jkcode.jkmvc.common.Config
-import net.jkcode.jkmvc.common.randomInt
+import net.jkcode.jkutil.cache.ICache
+import net.jkcode.jkutil.common.Config
+import net.jkcode.jkutil.common.randomInt
 import net.jkcode.jkmvc.db.Db
 import net.jkcode.jksoa.benchmark.common.api.MessageEntity
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService

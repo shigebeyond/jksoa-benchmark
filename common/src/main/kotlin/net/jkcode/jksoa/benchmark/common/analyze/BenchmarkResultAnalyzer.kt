@@ -1,6 +1,6 @@
 package net.jkcode.jksoa.benchmark.common.analyze
 
-import net.jkcode.jkmvc.common.travel
+import net.jkcode.jkutil.common.travel
 import java.io.File
 import java.lang.IllegalArgumentException
 

@@ -1,6 +1,6 @@
 package net.jkcode.jksoa.benchmark.dubbo
 
-import net.jkcode.jkmvc.common.Config
+import net.jkcode.jkutil.common.Config
 import net.jkcode.jksoa.benchmark.common.BenchmarkTest
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.IBenchmarkService

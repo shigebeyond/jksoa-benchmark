@@ -1,6 +1,6 @@
 package net.jkcode.jksoa.benchmark.motan
 
-import net.jkcode.jkmvc.common.Config
+import net.jkcode.jkutil.common.Config
 import net.jkcode.jksoa.benchmark.common.BenchmarkTest
 import net.jkcode.jksoa.benchmark.common.IBenchmarkClient
 import net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkServiceAsync
