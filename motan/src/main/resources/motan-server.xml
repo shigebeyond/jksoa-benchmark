@@ -22,7 +22,7 @@
        http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
 
     <!-- 业务具体实现类 -->
-    <bean id="motanBenchmarkServiceImpl" class="net.jkcode.jksoa.benchmark.common.impl.motan.MotanBenchmarkService"/>
+    <bean id="motanBenchmarkServiceImpl" class="net.jkcode.jkbenchmark.rpc.common.impl.motan.MotanBenchmarkService"/>
 
     <!-- 注册中心配置 使用不同注册中心需要依赖对应的jar包。如果不使用注册中心，可以把check属性改为false，忽略注册失败。-->
     <motan:registry regProtocol="zookeeper" name="zkRegistry" address="127.0.0.1:2181"/>
@@ -38,7 +38,7 @@
                         application="myMotanBenchmark" registry="zkRegistry" id="serviceBasicConfig"/>
 
     <!-- 具体rpc服务配置，声明实现的接口类。需要根据业务情况设置合适的超时时间 -->
-    <motan:service interface="net.jkcode.jksoa.benchmark.common.api.motan.IMotanBenchmarkService"
+    <motan:service interface="net.jkcode.jkbenchmark.rpc.common.api.motan.IMotanBenchmarkService"
                    ref="motanBenchmarkServiceImpl" export="benchmarkMotan:8002" basicService="serviceBasicConfig"
                    requestTimeout="200">
     </motan:service>

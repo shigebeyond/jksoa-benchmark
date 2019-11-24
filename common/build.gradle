@@ -12,11 +12,8 @@ dependencies {
         compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version" // rpc
     }
 
-    // motan -- ResponResponseFutureseFuture
+    // motan -- 要做motan的异步接口
     compile "com.weibo:motan-core:$motan_version"
-
-
-    compile "de.ruedigermoeller:fst:2.57"
 
     // test
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"

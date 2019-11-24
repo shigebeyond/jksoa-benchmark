@@ -6,6 +6,6 @@ if [ "$1" = "debug" ]; then
     JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
 fi
 
-SERVER_NAME='net.jkcode.jksoa.benchmark.dubbo.BenchmarkServer'
+SERVER_NAME='net.jkcode.jkbenchmark.rpc.dubbo.BenchmarkServer'
 
 java $JAVA_OPTS $JAVA_DEBUG_OPTS -cp conf:libs/* $SERVER_NAME
