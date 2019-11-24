@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-object BenchmarkClient: IBenchmarkClient("dubbo") {
+class BenchmarkClient: IBenchmarkClient("dubbo") {
 
     /**
      * 服务

@@ -8,6 +8,6 @@ if [ "$1" = "debug" ]; then
     JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
 fi
 
-SERVER_NAME='net.jkcode.jkbenchmark.rpc.jkrpc.BenchmarkClient'
+CLIENT_NAME='net.jkcode.jkbenchmark.rpc.jkrpc.BenchmarkClient'
 
-java $JAVA_OPTS -cp conf:libs/* $SERVER_NAME
+java $JAVA_OPTS -cp conf:libs/* net.jkcode.jkbenchmark.BenchmarkApp $CLIENT_NAME
