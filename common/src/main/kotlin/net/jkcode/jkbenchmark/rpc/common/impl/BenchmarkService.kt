@@ -48,7 +48,7 @@ class BenchmarkService: IBenchmarkService {
      * 建表: message
      */
     protected fun createTable() {
-        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("benchmark.sql")
+        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("jksoa-benchmark.sql")
         val txt = InputStreamReader(`is`).readText()
         val sqls = txt.split(";\\s+".toRegex())
         for(sql in sqls)

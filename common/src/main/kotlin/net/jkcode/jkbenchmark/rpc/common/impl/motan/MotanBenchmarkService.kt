@@ -48,7 +48,7 @@ class MotanBenchmarkService: IMotanBenchmarkService {
      * 建表: message
      */
     private fun createTable() {
-        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("benchmark.sql")
+        val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("jksoa-benchmark.sql")
         val sql = InputStreamReader(`is`).readText()
         Db.instance().execute(sql)
     }

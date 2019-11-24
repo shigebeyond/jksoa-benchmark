@@ -4,13 +4,9 @@ dependencies {
     compile 'org.jetbrains.kotlin:kotlin-reflect'
     //compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    if(env == 'dev') { // 分支 test-benchmark, 作为jksoa子模块
-        compile project(':jkmvc-orm') // orm
-        compile project(':jksoa-rpc:jksoa-rpc-client') // rpc
-    }else {
-        compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version" // orm
-        compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version" // rpc
-    }
+    compile "net.jkcode.jkbenchmark:jkbenchmark:$jkbenchmark_version" // benchmark
+    compile "net.jkcode.jkmvc:jkmvc-orm:$jkmvc_version" // orm
+    compile "net.jkcode.jksoa:jksoa-rpc-client:$jksoa_version" // rpc
 
     // motan -- 要做motan的异步接口
     compile "com.weibo:motan-core:$motan_version"
