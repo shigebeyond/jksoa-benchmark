@@ -11,6 +11,9 @@ import net.jkcode.jkbenchmark.rpc.common.impl.MessageModel
 import net.jkcode.jksoa.common.RpcResponse
 import java.io.File
 import java.util.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.ForkJoinPool
 import kotlin.collections.ArrayList
 
 /**
@@ -143,5 +146,30 @@ class MyTest {
             if (v2 != v3)
                 println("第 $i 个字节不等: $v2 != $v3")
         }
+    }
+
+    @Test
+    fun testThreadPool() {
+        val pool = Executors.newFixedThreadPool(2)
+//        val pool = net.jkcode.jkutil.common.StandardThreadExecutor(2, 2, Integer.MAX_VALUE)
+//        val pool = com.weibo.api.motan.core.StandardThreadExecutor(2, 2, Integer.MAX_VALUE - 100)
+
+        val requests = 500000
+        val results = (0..4).map {
+            val latch = CountDownLatch(requests)
+            val start = System.currentTimeMillis()
+            for (i in 0..requests) {
+                pool.execute {
+                    println(i)
+                    latch.countDown()
+                }
+            }
+            latch.await()
+            val runtime = System.currentTimeMillis() - start
+            println("耗时 $runtime ms")
+            runtime
+        }
+
+        println("最小耗时 ${results.min()} ms")
     }
 }

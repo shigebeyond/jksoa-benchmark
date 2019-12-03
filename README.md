@@ -7,9 +7,9 @@
 
 以下是我们测试的结果：
 
-## 测试环境
+# 测试环境
 
-### 硬件配置
+## 硬件配置
 
      Server端：
      CPU：model name:Intel(R) Xeon(R) CPU E5-2620 v2 @ 2.10GHz,cache size: 15360 KB,processor_count : 24
@@ -23,7 +23,7 @@
      网络：千兆网卡
      硬盘：900GB
 
-### 软件配置
+## 软件配置
 
      JDK版本：
      java version "1.8.0_172"
@@ -33,13 +33,89 @@
      JVM参数：
      java -Djava.net.preferIPv4Stack=true -server -Xms1g -Xmx1g -XX:PermSize=128m
 
-## 测试脚本
+# 测试对象
 
-### Server测试场景：
+## jksoa
+1. 版本: 1.9.0
+
+2. 线程池大小: [20, 800], 队列大小: 100000000
+
+jksoa-benchmark/jkrpc/src/main/resources/common-pool.yaml
+
+```
+# 公共线程池的配置
+# 初始线程数
+corePoolSize: 20
+# 最大线程数
+maximumPoolSize: 800
+# 队列大小
+queueSize: 100000000
+# 应用可传递ScopedTransferableThreadLocal
+useSttl: false
+```
+
+3. client端请求超时: 100秒
+
+jksoa-benchmark/jkrpc/src/main/resources/rpc-client.yaml
+
+```
+connectTimeoutMillis: 500 # 连接超时，int类型，单位：毫秒
+requestTimeoutMillis: !!java.lang.Long 100000 # 请求超时，Long类型，单位：毫秒
+```
+
+## dubbo
+1. 版本: 2.7.2
+
+2. 线程池大小: [20, 800], 队列大小: 100000000
+
+jksoa-benchmark/dubbo/src/main/resources/spring/dubbo-provider.xml
+
+```
+<dubbo:protocol name="dubbo" dispatcher="all" threadpool="eager" corethreads="20" threads="800" queues="100000000"/>
+```
+
+3. client端请求超时: 100秒
+
+jksoa-benchmark/dubbo/src/main/resources/spring/dubbo-consumer.xml
+
+```
+<dubbo:reference id="benchmarkService" check="false" interface="net.jkcode.jkbenchmark.rpc.common.api.IBenchmarkService" timeout="100000"/>
+```
+
+## motan
+1. 版本: 1.1.6
+
+2. 线程池大小: [20, 800], 队列大小: 100000000
+
+jksoa-benchmark/motan/src/main/resources/motan-server.xml
+
+```
+<!-- 协议配置。为防止多个业务配置冲突，推荐使用id表示具体协议。-->
+<motan:protocol id="benchmarkMotan" default="true" name="motan"
+                requestTimeout="20000" maxServerConnection="80000" maxContentLength="1048576"
+                maxWorkerThread="800" minWorkerThread="20" workerQueueSize="100000000"/>
+```
+
+3. client端请求超时: 100秒
+
+jksoa-benchmark/motan/src/main/resources/motan-client.xml
+
+```
+<!-- 具体referer配置。使用方通过beanid使用服务接口类 -->
+<motan:referer id="asyncBenchmarkService" directUrl="127.0.0.1:8002"
+               interface="net.jkcode.jkbenchmark.rpc.common.api.motan.IMotanBenchmarkServiceAsync"
+               connectTimeout="500" requestTimeout="100000" basicReferer="motanClientBasicConfig"
+               async="true"/>
+```
+
+
+# 测试脚本
+
+## Server测试场景：
 
     并发多个Client，连接数50，并发数100，测试Server极限性能
 
-### Client测试场景：
+## Client测试场景：
 
     单客户端，10连接，在并发数分别为1，10，20，50的情况下，分别进行如下场景测试：
     - 传入空包，不做任何处理，原样返回
@@ -51,15 +127,15 @@
     - 传入30kString，不做任何处理，原样返回
     - 传入50kString，不做任何处理，原样返回。
 
-## 测试结果
+# 测试结果
 
-### Server测试结果：
+## Server测试结果：
 
     请求空包：单Server极限TPS：18W
     请求1KString：单Server极限TPS：8.4W
     请求5KString：单Server极限TPS：2W
 
-### Client测试结果：
+## Client测试结果：
 
 对比图：
 

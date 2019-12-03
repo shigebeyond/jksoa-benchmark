@@ -25,7 +25,7 @@
 
     <dubbo:registry address="zookeeper://127.0.0.1:2182"/>
 
-    <dubbo:protocol name="dubbo"/>
+    <dubbo:protocol name="dubbo" dispatcher="all" threadpool="eager" corethreads="20" threads="800" queues="100000000"/>
 
     <bean id="benchmarkService" class="net.jkcode.jkbenchmark.rpc.common.impl.BenchmarkService"/>
 
