@@ -21,6 +21,7 @@ class BenchmarkClient: IBenchmarkClient("motan") {
         val benchmarkService = context.getBean("asyncBenchmarkService", IMotanBenchmarkServiceAsync::class.java)
         /*val f = benchmarkService.getMessageFromDbAsync(1)
         println(f.value)*/
+        benchmarkService
     }
 
 }

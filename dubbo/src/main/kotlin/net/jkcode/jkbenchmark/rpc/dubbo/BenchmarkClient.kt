@@ -21,6 +21,7 @@ class BenchmarkClient: IBenchmarkClient("dubbo") {
         val benchmarkService = context.getBean("benchmarkService", IBenchmarkService::class.java)
         /*val r = benchmarkService.getMessageFromDb( 1)
         println(r.get())*/
+        benchmarkService
     }
 
 

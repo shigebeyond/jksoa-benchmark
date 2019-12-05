@@ -52,7 +52,8 @@ class BenchmarkService: IBenchmarkService {
         val txt = InputStreamReader(`is`).readText()
         val sqls = txt.split(";\\s+".toRegex())
         for(sql in sqls)
-            Db.instance().execute(sql)
+            if(sql.isNotBlank())
+                Db.instance().execute(sql)
     }
 
     /**

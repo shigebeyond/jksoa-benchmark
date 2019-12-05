@@ -2,13 +2,13 @@ package net.jkcode.jkbenchmark.rpc.common.impl.motan
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
-import net.jkcode.jkutil.cache.ICache
-import net.jkcode.jkutil.common.Config
-import net.jkcode.jkutil.common.randomInt
-import net.jkcode.jkmvc.db.Db
 import net.jkcode.jkbenchmark.rpc.common.api.MessageEntity
 import net.jkcode.jkbenchmark.rpc.common.api.motan.IMotanBenchmarkService
 import net.jkcode.jkbenchmark.rpc.common.impl.MessageModel
+import net.jkcode.jkmvc.db.Db
+import net.jkcode.jkutil.cache.ICache
+import net.jkcode.jkutil.common.Config
+import net.jkcode.jkutil.common.randomInt
 import java.io.File
 import java.io.InputStreamReader
 
@@ -47,10 +47,13 @@ class MotanBenchmarkService: IMotanBenchmarkService {
     /**
      * 建表: message
      */
-    private fun createTable() {
+    protected fun createTable() {
         val `is` = Thread.currentThread().contextClassLoader.getResourceAsStream("jksoa-benchmark.sql")
-        val sql = InputStreamReader(`is`).readText()
-        Db.instance().execute(sql)
+        val txt = InputStreamReader(`is`).readText()
+        val sqls = txt.split(";\\s+".toRegex())
+        for(sql in sqls)
+            if(sql.isNotBlank())
+                Db.instance().execute(sql)
     }
 
     /**

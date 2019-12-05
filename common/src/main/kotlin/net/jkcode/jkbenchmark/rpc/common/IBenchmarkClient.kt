@@ -27,7 +27,7 @@ abstract class IBenchmarkClient(public override val name: String): IBenchmarkPla
         return when(benchmarkService){
                     is IBenchmarkService -> getNormalAction(benchmarkService as IBenchmarkService, action)
                     is IMotanBenchmarkServiceAsync -> getMotanAction(benchmarkService as IMotanBenchmarkServiceAsync, action)
-                    else -> throw IllegalArgumentException("不能识别 benchmarkService 类型")
+                    else -> throw IllegalArgumentException("不能识别 benchmarkService 类型: " + benchmarkService.javaClass)
                 }
     }
 

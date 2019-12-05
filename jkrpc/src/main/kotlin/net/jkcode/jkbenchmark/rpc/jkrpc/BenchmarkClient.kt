@@ -19,6 +19,7 @@ class BenchmarkClient: IBenchmarkClient("jksoa")  {
         val benchmarkService = Referer.getRefer<IBenchmarkService>()
         /*val r = benchmarkService.getMessageFromDb( 1)
         println(r.get())*/
+        benchmarkService
     }
 
 }

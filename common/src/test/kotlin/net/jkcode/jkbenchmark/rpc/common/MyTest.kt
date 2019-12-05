@@ -9,6 +9,7 @@ import org.junit.Test
 import net.jkcode.jkutil.serialize.ISerializer
 import net.jkcode.jkbenchmark.rpc.common.impl.MessageModel
 import net.jkcode.jksoa.common.RpcResponse
+import net.jkcode.jkutil.common.CommonThreadPool
 import java.io.File
 import java.util.*
 import java.util.concurrent.CountDownLatch
@@ -171,5 +172,12 @@ class MyTest {
         }
 
         println("最小耗时 ${results.min()} ms")
+    }
+
+    @Test
+    fun testThreadPool2() {
+        CommonThreadPool.execute {
+            println(Thread.currentThread().name)
+        }
     }
 }
