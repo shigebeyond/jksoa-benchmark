@@ -22,7 +22,7 @@ class BenchmarkService: IBenchmarkService {
     /**
      * 应用配置
      */
-    public val appConfig: Config = Config.instance("app", "yaml")
+    public val appConfig: Config = Config.instance("bmapp", "yaml")
 
     /**
      * 基于内存的缓存

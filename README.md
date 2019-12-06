@@ -50,8 +50,6 @@ corePoolSize: 20
 maximumPoolSize: 800
 # 队列大小
 queueSize: 100000000
-# 应用可传递ScopedTransferableThreadLocal
-useSttl: false
 ```
 
 3. client端请求超时: 100秒
