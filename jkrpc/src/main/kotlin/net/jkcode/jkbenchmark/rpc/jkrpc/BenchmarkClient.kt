@@ -10,7 +10,7 @@ import net.jkcode.jksoa.rpc.client.referer.Referer
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 10:33 AM
  */
-class BenchmarkClient: IBenchmarkClient("jksoa")  {
+class BenchmarkClient: IBenchmarkClient("jkrpc")  {
 
     /**
      * 服务
