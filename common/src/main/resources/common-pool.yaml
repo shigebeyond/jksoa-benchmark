@@ -1,7 +1,0 @@
-# 公共线程池的配置
-# 初始线程数
-corePoolSize: 20
-# 最大线程数
-maximumPoolSize: 800
-# 队列大小
-queueSize: 100000000

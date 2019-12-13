@@ -1,8 +1,8 @@
 # 动作: nth/cache/file/db
-action: db
+action: nth
 # 并发数
 concurrents: 10
 # 请求数
-requests: 10000
+requests: 50000
 # 是否异步
 async: true

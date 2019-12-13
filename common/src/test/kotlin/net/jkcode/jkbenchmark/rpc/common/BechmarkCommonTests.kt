@@ -22,7 +22,7 @@ import kotlin.collections.ArrayList
  * @author shijianhang<772910474@qq.com>
  * @date 2019-10-30 3:03 PM
  */
-class BechmarkCommonTest {
+class BechmarkCommonTests {
 
     @Test
     fun testJson(){
@@ -180,4 +180,5 @@ class BechmarkCommonTest {
             println(Thread.currentThread().name)
         }
     }
+
 }
