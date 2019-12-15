@@ -27,7 +27,7 @@
 
     <!-- motan协议配置 -->
     <motan:protocol default="true" name="motan" haStrategy="failfast"
-                    loadbalance="roundrobin" maxClientConnection="10" minClientConnection="2"/>
+                    loadbalance="roundrobin" maxClientConnection="10" minClientConnection="10"/>
 
     <!-- 通用referer基础配置 -->
     <motan:basicReferer requestTimeout="100" accessLog="false"
