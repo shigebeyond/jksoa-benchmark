@@ -2,20 +2,17 @@ package net.jkcode.jkbenchmark.rpc.common
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
-import net.jkcode.jkutil.common.randomInt
 import net.jkcode.jkbenchmark.rpc.common.api.MessageEntity
 import net.jkcode.jkbenchmark.rpc.common.impl.BenchmarkService
-import org.junit.Test
-import net.jkcode.jkutil.serialize.ISerializer
-import net.jkcode.jkbenchmark.rpc.common.impl.MessageModel
+import net.jkcode.jkbenchmark.rpc.common.impl.motan.MotanBenchmarkService
 import net.jkcode.jksoa.common.RpcResponse
 import net.jkcode.jkutil.common.CommonThreadPool
+import net.jkcode.jkutil.common.randomInt
+import net.jkcode.jkutil.serialize.ISerializer
+import org.junit.Test
 import java.io.File
-import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
-import java.util.concurrent.ForkJoinPool
-import kotlin.collections.ArrayList
 
 /**
  *
@@ -23,6 +20,20 @@ import kotlin.collections.ArrayList
  * @date 2019-10-30 3:03 PM
  */
 class BechmarkCommonTests {
+
+    @Test
+    fun testService(){
+        val service = BenchmarkService()
+        val msgFuture = service.getMessageFromDb(1)
+        println(msgFuture.get())
+    }
+
+    @Test
+    fun testMotanService(){
+        val service = MotanBenchmarkService()
+        val msg = service.getMessageFromDb(1)
+        println(msg)
+    }
 
     @Test
     fun testJson(){
@@ -43,13 +54,6 @@ class BechmarkCommonTests {
         // json转array
         val msgs2 = JSONObject.parseArray(json, MessageEntity::class.java)
         println(msgs2)
-    }
-
-    @Test
-    fun testService(){
-        val service = BenchmarkService()
-        val msgFuture = service.getMessageFromDb(1)
-        println(msgFuture.get())
     }
 
     @Test
@@ -82,71 +86,6 @@ class BechmarkCommonTests {
         val s = ISerializer.instance("fst")
         val res3 = s.unserialize(bs3)
         println(res3)
-    }
-
-    @Test
-    fun testFile(){
-        val bs = File("/home/shi/test/benchmark/client.data").readBytes()
-        val bs2 = File("/home/shi/test/benchmark/server.data").readBytes()
-        val bs3 = File("/home/shi/test/benchmark/original.data").readBytes()
-        checkEquals(bs, bs2)
-        checkEquals(bs2, bs3)
-
-        val s = ISerializer.instance("fst")
-        val msg = s.unserialize(bs)
-        println(msg)
-        val msg2 = s.unserialize(bs2)
-        println(msg2)
-    }
-
-    @Test
-    fun testByte(){
-        val s = ISerializer.instance("fst")
-        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()
-        val res = RpcResponse(114137583746809856, msg)
-        println(res)
-        val bs = s.serialize(res)!!
-
-        val msg2 = s.unserialize(bs)
-        println(msg2)
-
-    }
-
-    @Test
-    fun testByte2(){
-        println("------------- 原始的 -------------")
-        val s = ISerializer.instance("fst")
-        val msg = MessageModel.queryBuilder().where("id", "=", 1).findEntity<MessageModel, MessageEntity>()
-        val res = RpcResponse(114137583746809856, msg)
-        println(res)
-        val bs = s.serialize(res)!!
-
-        // server发送的
-        println("------------- server发送的 -------------")
-        val bs2 = File("/home/shi/test/benchmark/server.data").readBytes()
-        checkEquals(bs, bs2)
-        val res2 = s.unserialize(bs2!!) as RpcResponse
-        println(res2)
-        println(res.value == res2.value)
-
-        // client收到的
-        println("------------- client收到的 -------------")
-        val bs3 = File("/home/shi/test/benchmark/client.data").readBytes()
-        checkEquals(bs2, bs3)
-        val res3 = s.unserialize(bs3!!) as RpcResponse
-        println(res3)
-        println(res.value == res3.value)
-    }
-
-    private fun checkEquals(bs1: ByteArray, bs2: ByteArray) {
-        //println(bs1 == bs2)
-        println(Arrays.equals(bs1, bs2))
-        for (i in 0 until bs1.size) {
-            val v2 = bs1[i]
-            val v3 = bs2[i]
-            if (v2 != v3)
-                println("第 $i 个字节不等: $v2 != $v3")
-        }
     }
 
     @Test
