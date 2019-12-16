@@ -1,13 +1,14 @@
 package net.jkcode.jkbenchmark.rpc.common.api
 
 import net.jkcode.jkmvc.orm.OrmEntity
+import java.io.Serializable
 
 /**
  * 消息实体
  * @author shijianhang<772910474@qq.com>
  * @date 2019-06-27 2:53 PM
  */
-class MessageEntity {
+class MessageEntity: Serializable {
 
     // 代理属性读写
     public var id:Int = 0 // 消息id
