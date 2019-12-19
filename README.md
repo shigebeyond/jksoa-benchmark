@@ -1,8 +1,5 @@
 # 性能测试
 
-参考motan-benchmark: 1 [说明](https://github.com/weibocom/motan/blob/master/docs/wiki/zh_userguide.md#性能测试) 2
-[代码](https://github.com/weibocom/motan/tree/master/motan-benchmark)
-
 我分别针对 jkrpc(jksoa-rpc) / dubbo / motan 等3个框架进行性能测试
 
 以下是我们测试的结果：
@@ -136,6 +133,35 @@ jksoa-benchmark/motan/src/main/resources/motan-client.xml
 
 ## 测试结果
 
+
+[结果sql](result/rpc/result.sql)
+
+1. `nth` 场景
+
+tps: jkrpc 优于 dubbo/motan, jkrpc遥遥领先
+
+![](result/rpc/nth-tps.png)
+
+rt: jkrpc 优于 dubbo/motan, jkrpc 1ms左右, motan 5ms左右, dubbo 更差
+
+![](result/rpc/nth-rt.png)
+
+
+2. `db` 场景:
+
+error percent(错误率): motan错误率太多了, 不参与本场景的结果对比
+
+![](result/rpc/db-err_pct.png)
+
+tps: jkrpc 优于 dubbo
+
+![](result/rpc/db-tps.png)
+
+rt: 差不多, 因为db阻塞大, 相对框架处理的耗时差别不大
+
+![](result/rpc/db-rt.png)
+
+
 # jkrpc的client端连接类型的对比测试
 
 ## 测试对象
@@ -211,13 +237,17 @@ rt 差不多
 
 参考 jkrpc 中 `NettyConnection` 的实现
 
-1. 同步等待发送请求完成
+1. `syn` 同步等待发送请求完成
+
+代码如下
 
 ```
 writeFuture.awaitUninterruptibly()
 ```
 
-2. 异步处理发送请求完成事件
+2. `asyn` 异步处理发送请求完成事件
+
+代码如下, 其实就少了一个阻塞等待
 
 ```
 writeFuture.addListener)
@@ -225,3 +255,24 @@ writeFuture.addListener)
 
 ## 测试结果
 
+[结果sql](result/asyn_send/result.sql)
+
+1. `nth` 场景
+
+tps: syn 更优, 跟预想不同, 还是看看rt
+
+![](result/asyn_send/nth-tps.png)
+
+rt: asyn 更优化, 平均每请求节省1ms
+
+![](result/asyn_send/nth-rt.png)
+
+光看 `nth` 场景不稳妥, 接下来看看 `db` 场景
+
+2. `db` 场景:
+
+tps: asyn 更优
+
+![](result/asyn_send/db-tps.png)
+
+rt: 差不多, 因为db阻塞大, 相对同步异步发送的耗时差别不大

@@ -1,5 +1,7 @@
 package net.jkcode.jkbenchmark.rpc.motan
 
+import net.jkcode.jkbenchmark.BenchmarkApp
+import net.jkcode.jkbenchmark.IBenchmarkPlayer
 import net.jkcode.jkbenchmark.rpc.common.IBenchmarkClient
 import net.jkcode.jkbenchmark.rpc.common.api.motan.IMotanBenchmarkServiceAsync
 import org.springframework.context.support.ClassPathXmlApplicationContext
@@ -11,6 +13,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
  * @date 2019-10-30 10:33 AM
  */
 class BenchmarkClient: IBenchmarkClient("motan") {
+
+    companion object{
+        @JvmStatic
+        fun main(args: Array<String>) {
+            // 运行app
+            BenchmarkApp(BenchmarkClient()).run()
+        }
+    }
 
     /**
      * 服务
