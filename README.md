@@ -261,6 +261,8 @@ writeFuture.addListener)
 
 tps: syn 更优, 跟预想不同, 还是看看rt
 
+由于client/server在同一台机器, 而asyn下client线程阻塞少, 占用cpu较多, 从而导致server线程占用的cpu就变少
+
 ![](result/asyn_send/nth-tps.png)
 
 rt: asyn 更优化, 平均每请求节省1ms
